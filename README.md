@@ -8,6 +8,8 @@ This gem contains the basic framework for [dryly](http://en.wikipedia.org/wiki/D
 
 Use it to abstract away from the underlying [Watir](http://www.watir.com) code and create your own [DSL](http://en.wikipedia.org/wiki/Domain_specific_language).
 
+Tremendous thanks is due to [Alister Scott](http://watirmelon.com), whose [custom page object code](https://github.com/alisterscott/wmf-custom-page-object) for the Wikimedia Foundation provided the inspiration for this gem.
+
 How to Start
 ------------
 
