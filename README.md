@@ -49,13 +49,17 @@ Next, you create classes for the individual pages in your web site. These classe
 ```ruby
 class Home < BasePage
 
-  # This allows the header elements to be defined once in the BasePage class and then reused throughout your web pages...
+  # This allows the header elements to be defined once
+  # in the BasePage class and then reused throughout your web pages...
   header_elements
 
-  expected_element :title # When the Home class is instantiated, the script will ensure that the :title element is present on the page before the script continues
+  expected_element :title # When the Home class is instantiated (using the Foundry),
+                          # the script will ensure that the :title element is present
+                          # on the page before the script continues
 
   # Now you define elements that are specific to your Home page...
   element(:title) { |b| b.h3(id: "title") }
+  # and on and on...
 
 end
 ```
@@ -81,9 +85,12 @@ class YourDataObject
       :title=>"My Data Title",
       :description=>"My Data's Description"
     }
-    options = defaults.merge(opts) # This line combines the defaults with any options you passed explicitly
-    set_options(options) # This line turns all the contents of the options Hash into YourDataObject's class instance variables
-    requires :id # This line allows you to specify any attributes that must be explicitly defined for the data object
+    options = defaults.merge(opts) # This line combines the defaults
+                                   # with any options you passed explicitly
+    set_options(options) # This line turns all the contents of the options
+                         # Hash into YourDataObject's class instance variables
+    requires :id # This line allows you to specify any attributes that must
+                 # be explicitly defined for the data object
   end
 
   # Now define a bunch of methods that are relevant to your data object.
@@ -99,7 +106,8 @@ class YourDataObject
 
   def edit opts={}
     # Your code here...
-    set_options(opts)
+    set_options(opts) # This updates all your class instance variables
+                      # with any new values specified by the opts Hash.
   end
 
   def remove
@@ -122,7 +130,8 @@ include Foundry # Gives you access to the methods that instantiate your Page and
 
 on MyPage do |page|
   page.title.set "Bla bla"
-  page.description==@my_thing.description ? puts "Passed" : puts "Failed" # Very contrived example. You should be using your favorite verification framework here.
+  # Very contrived example. You should be using your favorite verification framework here:
+  page.description==@my_thing.description ? puts "Passed" : puts "Failed"
 end
 
 ```
