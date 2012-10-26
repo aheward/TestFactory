@@ -26,7 +26,7 @@ Begin by creating a BasePage class. This class should inherit from PageFactory a
 ```ruby
 require 'test-factory'
 
-class BasePage < PageMaker
+class BasePage < PageFactory
 
   class << self
 
