@@ -18,7 +18,7 @@ module DataFactory
   #
   # @example
   #
-  # requires :site :assignment
+  #   requires :site :assignment
   #
   def requires(*elements)
     elements.each do |inst_var|

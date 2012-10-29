@@ -91,7 +91,7 @@ class YourDataObject
                                    # with any options you passed explicitly
     set_options(options) # This line turns all the contents of the options
                          # Hash into YourDataObject's class instance variables
-    requires :id # This line allows you to specify any attributes that must
+    requires @id # This line allows you to specify any class instance variables that must
                  # be explicitly defined for the data object
   end
 
