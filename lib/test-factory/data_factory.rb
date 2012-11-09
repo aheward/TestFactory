@@ -18,11 +18,11 @@ module DataFactory
   #
   # @example
   #
-  #   requires :site :assignment
+  #   requires @site @assignment
   #
   def requires(*elements)
     elements.each do |inst_var|
-      raise "You must explicitly define the #{inst_var} variable for the #{self}." if inst_var==nil
+      raise "You've neglected to define a required variable for the #{self}." if inst_var==nil
     end
   end
 
@@ -34,5 +34,23 @@ module DataFactory
     checkbox.set? ? :set : :clear
   end
   alias radio_setting checkbox_setting
+
+  # Use this method in your data object class for select list boxes that will have
+  # default values you may be interested in. The method will either set the select
+  # box to the value specified, or, if no value exists for the given variable in your
+  # data object, it will get the value from the UI and set the data object's
+  # variable to that value. Note that this only supports select lists that allow
+  # a single selection.
+  #
+  # @example
+  #
+  #   @num_resubmissions = get_or_set(@num_resubmissions, page.num_resubmissions)
+  def get_or_select(var, select_list)
+    if var==nil
+      select_list.selected_options[0].text
+    else
+      select_list.select var
+    end
+  end
 
 end
