@@ -8,6 +8,8 @@ This gem contains the basic framework for [dryly](http://en.wikipedia.org/wiki/D
 
 Use it to abstract away from the underlying [Watir](http://www.watir.com) code and create your own [DSL](http://en.wikipedia.org/wiki/Domain_specific_language).
 
+Tremendous thanks is due to [Alister Scott](http://watirmelon.com), whose [custom page object code](https://github.com/alisterscott/wmf-custom-page-object) for the Wikimedia Foundation provided the inspiration for this gem.
+
 How to Start
 ------------
 
@@ -26,7 +28,7 @@ Begin by creating a BasePage class. This class should inherit from PageFactory a
 ```ruby
 require 'test-factory'
 
-class BasePage < PageMaker
+class BasePage < PageFactory
 
   class << self
 
@@ -89,7 +91,7 @@ class YourDataObject
                                    # with any options you passed explicitly
     set_options(options) # This line turns all the contents of the options
                          # Hash into YourDataObject's class instance variables
-    requires :id # This line allows you to specify any attributes that must
+    requires @id # This line allows you to specify any class instance variables that must
                  # be explicitly defined for the data object
   end
 
