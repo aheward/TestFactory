@@ -135,7 +135,6 @@ on MyPage do |page|
   # Very contrived example. You should be using your favorite verification framework here:
   page.description==@my_thing.description ? puts "Passed" : puts "Failed"
 end
-
 ```
 
 Notice
