@@ -124,4 +124,10 @@ module StringFactory
     end
 
   end
+
+  # Returns a random hex string that matches an HTML color value.
+  def random_hex_color
+    "#"+("%06x" % (rand * 0xffffff)).upcase
+  end
+
 end

@@ -39,15 +39,14 @@ class PageFactory
       end
     end
     alias :value :element
-    alias :action :element
     alias :thing :element
 
-    def page_method method_name, &block
+    def action method_name, &block
       define_method method_name.to_s do |*thing|
         Proc.new(&block).call *thing, self
       end
     end
-    alias :pgmd :page_method
+    alias :pgmd :action
 
   end
 
