@@ -98,6 +98,7 @@ module DateFactory
   def in_a_year
     date_factory(Time.now + (3600*24*365))
   end
+  alias next_year in_a_year
 
   def yesterday
     date_factory(Time.now - (3600*24))
