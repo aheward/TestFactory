@@ -41,6 +41,9 @@ class PageFactory
 
     # The basic building block of the page object classes.
     # Use in conjunction with Watir to define all elements on a given page that are important to validate.
+    #
+    # @example
+    #   element(:title) { |b| b.frm.text_field(:id=>"title-id") }
     def element element_name
       raise "#{element_name} is being defined twice in #{self}!" if self.instance_methods.include?(element_name.to_sym)
       define_method element_name.to_s do
@@ -50,6 +53,15 @@ class PageFactory
     alias :value :element
 
     # The basic building block for interacting with elements on a page, such as links and buttons.
+    #
+    # @example
+    #   action(:continue) { |b| b.frm.button(:value=>"Continue").click }
+    #
+    # This can also be used to create methods that take parameters. Like so...
+    #
+    # @example
+    #   action(:select_style) { |stylename, b| b.div(:text=>/#{Regexp.escape(stylename)}/).link(:text=>"Select").click }
+    #
     def action method_name, &block
       define_method method_name.to_s do |*thing|
         Proc.new(&block).call *thing, self
