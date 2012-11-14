@@ -29,7 +29,7 @@ Please note that the following example is *very* simplified and contrived, to ke
 
 [Here](https://github.com/rSmart/sambal-cle) is one such.
 
-Begin by creating a BasePage class. This class should inherit from PageFactory and contain sets of elements that are generally common across the pages of your site.
+Begin by creating a BasePage class. This class should have PageFactory as its superclass and define sets of class elements that are generally common across the pages of your site.
 
 ```ruby
 require 'test-factory'
@@ -52,7 +52,7 @@ end
 
 ```
 
-Next, you create classes for the individual pages in your web site. These classes should inherit from your BasePage class, and should use any of the relevant methods defined in the BasePage class.
+Next, you create classes for the individual pages in your web site. These classes should have BasePage as their superclass, and should declare any of the relevant methods defined in the BasePage class.
 
 ```ruby
 class Home < BasePage
