@@ -1,5 +1,7 @@
 class PageFactory
 
+  # As the PageFactory will be the superclass for all your page classes, having this initialize
+  # method here means it's only written once.
   def initialize browser, visit = false
     @browser = browser
     goto if visit
@@ -7,6 +9,8 @@ class PageFactory
     has_expected_title? if respond_to? :has_expected_title?
   end
 
+  # Catches any "missing" methods and passes them to the browser object--which means
+  # that Watir will take care of parsing them.
   def method_missing sym, *args, &block
     @browser.send sym, *args, &block
   end
@@ -43,7 +47,8 @@ class PageFactory
     # Use in conjunction with Watir to define all elements on a given page that are important to validate.
     #
     # @example
-    #   element(:title) { |b| b.frm.text_field(:id=>"title-id") }
+    #   element(:title) { |b| b.text_field(:id=>"title-id") }
+    #   value(:page_header) { |b| b.h3(:class=>"page_header").text }
     def element element_name
       raise "#{element_name} is being defined twice in #{self}!" if self.instance_methods.include?(element_name.to_sym)
       define_method element_name.to_s do
@@ -53,13 +58,10 @@ class PageFactory
     alias :value :element
 
     # The basic building block for interacting with elements on a page, such as links and buttons.
+    # Methods that take one or more parameters can be built with this as well.
     #
     # @example
     #   action(:continue) { |b| b.frm.button(:value=>"Continue").click }
-    #
-    # This can also be used to create methods that take parameters. Like so...
-    #
-    # @example
     #   action(:select_style) { |stylename, b| b.div(:text=>/#{Regexp.escape(stylename)}/).link(:text=>"Select").click }
     #
     def action method_name, &block
