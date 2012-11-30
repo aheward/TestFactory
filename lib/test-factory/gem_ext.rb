@@ -5,13 +5,13 @@ module Watir
     # Use when the argument you are passing to a text field
     # may be nil, in which case you don't
     # want to do anything with the page element.
-    def fit(*args)
+    def fit(args)
       unless args==nil
         assert_exists
         assert_writable
 
         @element.clear
-        @element.send_keys(*args)
+        @element.send_keys(args)
       end
     end
   end
