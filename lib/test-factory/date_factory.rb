@@ -3,6 +3,32 @@ module DateFactory
 
   MONTHS = %w{JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC}
 
+  # Takes a time object and returns a hash containing
+  # various parts of the relevant date.
+  # @param time_object [Time] the moment you want to convert
+  # @returns [Hash] a hash object containing various parts of the date/time you passed to the method
+  def date_factory(time_object)
+    {
+        :sakai=>make_date(time_object),
+        :sakai_rounded=>make_date(time_object).gsub!(/:\d+/, ":#{Time.at(time_object.to_i/(5*60)*(5*60)).strftime("%M")}"), # Date with time rounded to nearest 5-minute mark.
+        :short_date=>time_object.strftime("%b %-d, %Y"), # => "Oct 18, 2013"
+        :samigo=>time_object.strftime("%m/%d/%Y %I:%M:%S %p"), # => "10/30/2012 07:02:05 AM"
+        :MON => time_object.strftime("%^b"), # => "DEC"
+        :Mon => time_object.strftime("%b"), # => "Jan"
+        :Month => time_object.strftime("%B"), # => "February"
+        :month_int => time_object.month, # => 3
+        :day_of_month => time_object.day, # => 17 Note this is not zero-padded
+        :weekday => time_object.strftime("%A"), # => "Monday"
+        :wkdy => time_object.strftime("%a"), # => "Tue"
+        :year => time_object.year, # => 2013
+        :hour => time_object.strftime("%I").to_i, # => "07" Zero-padded, 12-hour clock
+        :minute => (time_object).strftime("%M"), # => "02" Zero-padded
+        :minute_rounded => (Time.at(time_object.to_i/(5*60)*(5*60))).strftime("%M"), # => "05" Zero-padded, rounded to 5-minute increments
+        :meridian => time_object.strftime("%P"), # => "pm"
+        :MERIDIAN => time_object.strftime("%p") # => "AM"
+    }
+  end
+
   def an_hour_ago
     date_factory(Time.now - 3600)
   end
@@ -72,6 +98,7 @@ module DateFactory
   def in_a_year
     date_factory(Time.now + (3600*24*365))
   end
+  alias next_year in_a_year
 
   def yesterday
     date_factory(Time.now - (3600*24))
@@ -106,32 +133,6 @@ module DateFactory
     mins = time_object.strftime(":%M %P")
     hour = time_object.strftime("%l").to_i
     return month + day + year + hour.to_s + mins
-  end
-
-  # Takes a time object and returns a hash containing
-  # various parts of the relevant date.
-  # @param time_object [Time] the moment you want to convert
-  # @returns [Hash] a hash object containing various parts of the date/time you passed to the method
-  def date_factory(time_object)
-    {
-        :sakai=>make_date(time_object),
-        :sakai_rounded=>make_date(time_object).gsub!(/:\d+/, ":#{Time.at(time_object.to_i/(5*60)*(5*60)).strftime("%M")}"), # Date with time rounded to nearest 5-minute mark.
-        :short_date=>time_object.strftime("%b %-d, %Y"), # => "Oct 18, 2013"
-        :samigo=>time_object.strftime("%m/%d/%Y %I:%M:%S %p"), # => "10/30/2012 07:02:05 AM"
-        :MON => time_object.strftime("%^b"), # => "DEC"
-        :Mon => time_object.strftime("%b"), # => "Jan"
-        :Month => time_object.strftime("%B"), # => "February"
-        :month_int => time_object.month, # => 3
-        :day_of_month => time_object.day, # => 17 Note this is not zero-padded
-        :weekday => time_object.strftime("%A"), # => "Monday"
-        :wkdy => time_object.strftime("%a"), # => "Tue"
-        :year => time_object.year, # => 2013
-        :hour => time_object.strftime("%I").to_i, # => "07" Zero-padded, 12-hour clock
-        :minute => (time_object).strftime("%M"), # => "02" Zero-padded
-        :minute_rounded => (Time.at(time_object.to_i/(5*60)*(5*60))).strftime("%M"), # => "05" Zero-padded, rounded to 5-minute increments
-        :meridian => time_object.strftime("%P"), # => "pm"
-        :MERIDIAN => time_object.strftime("%p") # => "AM"
-    }
   end
 
 end

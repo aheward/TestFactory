@@ -8,6 +8,12 @@ This gem contains the basic framework for [dryly](http://en.wikipedia.org/wiki/D
 
 Use it to abstract away from the underlying [Watir](http://www.watir.com) code and create your own [DSL](http://en.wikipedia.org/wiki/Domain_specific_language).
 
+With TestFactory you have the ability to...
+
+1. Easily instantiate pages in a consistent manner
+2. Concisely describe elements on a page, keeping it DRY by avoiding repetition of element identifiers
+3. Provide higher-level methods that use the elements to perform user-oriented functions
+
 Tremendous thanks is due to [Alister Scott](http://watirmelon.com), whose [custom page object code](https://github.com/alisterscott/wmf-custom-page-object) for the Wikimedia Foundation provided the inspiration for this gem.
 
 How to Start
@@ -23,7 +29,7 @@ Please note that the following example is *very* simplified and contrived, to ke
 
 [Here](https://github.com/rSmart/sambal-cle) is one such.
 
-Begin by creating a BasePage class. This class should inherit from PageFactory and contain sets of elements that are generally common across the pages of your site.
+Begin by creating a BasePage class. This class should have PageFactory as its superclass and define sets of class elements that are generally common across the pages of your site.
 
 ```ruby
 require 'test-factory'
@@ -46,7 +52,7 @@ end
 
 ```
 
-Next, you create classes for the individual pages in your web site. These classes should inherit from your BasePage class, and should use any of the relevant methods defined in the BasePage class.
+Next, you create classes for the individual pages in your web site. These classes should have BasePage as their superclass, and should declare any of the relevant methods defined in the BasePage class.
 
 ```ruby
 class Home < BasePage
@@ -66,7 +72,7 @@ class Home < BasePage
 end
 ```
 
-Once you've got a bunch of classes set up for your site's various pages, you're going to want to create "data objects" to represent what goes into those pages. For this, you'll use the module DataObject. Your data classes should follow this basic structure:
+Once you've got a bunch of classes set up for your site's various pages, you're going to want to create "data objects" to represent what goes into those pages. For this, you'll use the module DataFactory. Your data classes should follow this basic structure:
 
 ```ruby
 class YourDataObject
@@ -135,7 +141,6 @@ on MyPage do |page|
   # Very contrived example. You should be using your favorite verification framework here:
   page.description==@my_thing.description ? puts "Passed" : puts "Failed"
 end
-
 ```
 
 Notice
