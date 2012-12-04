@@ -70,6 +70,38 @@ class PageFactory
       end
     end
 
+    # Use this for links that are safe to define by their text string.
+    # This method will return two methods for interacting with the link:
+    # one that refers to the link itself, and one that clicks on it.
+    # Since it's assumed that the most common thing done with a link is to click it,
+    # the method for clicking it will be named according to the text of the link,
+    # and the method for the link itself will have "_link" appended to it. Any special
+    # characters are stripped from the string. Capital letters are made lower case.
+    # And spaces and dashes are converted to underscores.
+    #
+    # @example
+    #   link("Click Me For Fun!") => :click_me_for_fun, :click_me_for_fun_link
+    def link(link_text)
+      element(StringFactory.damballa(link_text+"_link")) { |b| b.link(:text=>link_text) }
+      action(StringFactory.damballa(link_text)) { |b| b.frm.link(:text=>link_text).click }
+    end
+
+    # Use this for buttons that are safe to define by their value attribute.
+    # This method will return two methods for interacting with the button:
+    # one that refers to the button itself, and one that clicks on it.
+    # Since it's assumed that the most common thing done with a button is to click it,
+    # the method for clicking it will be named according to the value of the button,
+    # and the method for the button itself will have "_button" appended to it. Any special
+    # characters are stripped from the string. Capital letters are made lower case.
+    # And spaces and dashes are converted to underscores.
+    #
+    # @example
+    #   button("Click Me For Fun!") => :click_me_for_fun, :click_me_for_fun_link
+    def button(button_text)
+      element(StringFactory.damballa(button_text+"_button")) { |b| b.button(:value=>button_text) }
+      action(StringFactory.damballa(button_text)) { |b| b.frm.button(:value=>button_text).click }
+    end
+
   end
 
-end # PageMaker
+end # PageFactory
