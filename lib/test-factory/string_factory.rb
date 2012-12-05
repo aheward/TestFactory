@@ -121,12 +121,11 @@ module StringFactory
   # Converts a string to a symbol made up of snake case. Spaces and dashes are changed to underscore. Special characters are removed.
   # @example
   #   damballa("A String of Fun Stuff (for you)") => :a_string_of_fun_stuff_for_you
-  def damballa(text)
+  def self.damballa(text)
     text.gsub(/([+=|\\\.~@#'"\?`!\{\}\[\]\$%\^&\*\(\)])/, "").
         gsub(/([-\/\ ])/,"_").
         downcase.
         to_sym
   end
-  module_function :damballa
 
 end
