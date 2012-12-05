@@ -82,8 +82,8 @@ class PageFactory
     # @example
     #   link("Click Me For Fun!") => :click_me_for_fun, :click_me_for_fun_link
     def link(link_text)
-      element(StringFactory.damballa(link_text+"_link")) { |b| b.link(:text=>link_text) }
-      action(StringFactory.damballa(link_text)) { |b| b.frm.link(:text=>link_text).click }
+      element(damballa(link_text+"_link")) { |b| b.link(:text=>link_text) }
+      action(damballa(link_text)) { |b| b.frm.link(:text=>link_text).click }
     end
 
     # Use this for buttons that are safe to define by their value attribute.
@@ -98,8 +98,12 @@ class PageFactory
     # @example
     #   button("Click Me For Fun!") => :click_me_for_fun, :click_me_for_fun_link
     def button(button_text)
-      element(StringFactory.damballa(button_text+"_button")) { |b| b.button(:value=>button_text) }
-      action(StringFactory.damballa(button_text)) { |b| b.frm.button(:value=>button_text).click }
+      element(damballa(button_text+"_button")) { |b| b.button(:value=>button_text) }
+      action(damballa(button_text)) { |b| b.frm.button(:value=>button_text).click }
+    end
+
+    def damballa(text)
+      StringFactory::damballa(text)
     end
 
   end
