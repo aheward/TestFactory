@@ -1,3 +1,6 @@
+# The PageFactory class provides a set of methods that allow the rapid creation of page element definitions--known
+# colloquially as "page objects". These elements are defined using Watir syntax. Please see www.watir.com if you are
+# not familiar with Watir.
 class PageFactory
 
   # As the PageFactory will be the superclass for all your page classes, having this initialize
@@ -10,7 +13,8 @@ class PageFactory
   end
 
   # Catches any "missing" methods and passes them to the browser object--which means
-  # that Watir will take care of parsing them.
+  # that Watir will take care of parsing them, so the assumption is that the method being
+  # passed is a valid method for the browser object.
   def method_missing sym, *args, &block
     @browser.send sym, *args, &block
   end
@@ -61,8 +65,8 @@ class PageFactory
     # Methods that take one or more parameters can be built with this as well.
     #
     # @example
-    #   action(:continue) { |b| b.frm.button(:value=>"Continue").click }
-    #   action(:select_style) { |stylename, b| b.div(:text=>/#{Regexp.escape(stylename)}/).link(:text=>"Select").click }
+    #   action(:continue) { |b| b.frm.button(:value=>"Continue").click } #=> Creates a #continue method that clicks the Continue button
+    #   action(:select_style) { |stylename, b| b.div(:text=>/#{Regexp.escape(stylename)}/).link(:text=>"Select").click } #=> #select_style(stylename)
     #
     def action method_name, &block
       define_method method_name.to_s do |*thing|
@@ -80,7 +84,7 @@ class PageFactory
     # And spaces and dashes are converted to underscores.
     #
     # @example
-    #   link("Click Me For Fun!") => :click_me_for_fun, :click_me_for_fun_link
+    #   link("Click Me For Fun!") #=> Creates the methods #click_me_for_fun and #click_me_for_fun_link
     def link(link_text)
       element(damballa(link_text+"_link")) { |b| b.link(:text=>link_text) }
       action(damballa(link_text)) { |b| b.frm.link(:text=>link_text).click }
@@ -96,12 +100,14 @@ class PageFactory
     # And spaces and dashes are converted to underscores.
     #
     # @example
-    #   button("Click Me For Fun!") => :click_me_for_fun, :click_me_for_fun_link
+    #   button("Click Me For Fun!") #=> Creates the methods #click_me_for_fun and #click_me_for_fun_button
     def button(button_text)
       element(damballa(button_text+"_button")) { |b| b.button(:value=>button_text) }
       action(damballa(button_text)) { |b| b.frm.button(:value=>button_text).click }
     end
 
+    # A helper method that converts the passed string into snake case. See the StringFactory
+    # module for more info.
     def damballa(text)
       StringFactory::damballa(text)
     end
