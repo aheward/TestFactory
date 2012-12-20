@@ -14,6 +14,7 @@ module Foundry
   # method when you are already on the site page you want to interact with.
   # @param page_class [Class] the name of the page class that you want to instantiate
   # @param visit [TrueClass, FalseClass] Essentially you will never have to specify this explicitly
+  # @param &block [C] this is the block of code that you want to run while on the given page
   def on page_class, visit=false, &block
     @current_page = page_class.new @browser, visit
     block.call @current_page if block

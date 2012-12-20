@@ -31,6 +31,7 @@ class PageFactory
 
     # Define this in a page class and when that class is instantiated it will wait until that
     # element appears on the page before continuing with the script.
+    # @param element_name [Symbol] The method name of the element that must be present on the page
     def expected_element element_name, timeout=30
       define_method 'expected_element' do
         self.send(element_name).wait_until_present timeout
@@ -40,6 +41,7 @@ class PageFactory
     # Define this in a page class and when the class is instantiated it will verify that
     # the browser's title matches the expected title. If there isn't a match, it raises an
     # error and halts the script.
+    # @param expected_title [String] The exact text that is expected to appear in the Browser title when the page loads
     def expected_title expected_title
       define_method 'has_expected_title?' do
         has_expected_title = expected_title.kind_of?(Regexp) ? expected_title =~ @browser.title : expected_title == @browser.title
@@ -49,6 +51,7 @@ class PageFactory
 
     # The basic building block of the page object classes.
     # Use in conjunction with Watir to define all elements on a given page that are important to validate.
+    # @param element_name [Symbol] The name you're giving to the element on the page.
     #
     # @example
     #   element(:title) { |b| b.text_field(:id=>"title-id") }
@@ -65,8 +68,8 @@ class PageFactory
     # Methods that take one or more parameters can be built with this as well.
     #
     # @example
-    #   action(:continue) { |b| b.frm.button(:value=>"Continue").click } #=> Creates a #continue method that clicks the Continue button
-    #   action(:select_style) { |stylename, b| b.div(:text=>/#{Regexp.escape(stylename)}/).link(:text=>"Select").click } #=> #select_style(stylename)
+    #   action(:continue) { |b| b.frm.button(:value=>"Continue").click } => Creates a #continue method that clicks the Continue button
+    #   action(:select_style) { |stylename, b| b.div(:text=>/#{Regexp.escape(stylename)}/).link(:text=>"Select").click } => #select_style(stylename)
     #
     def action method_name, &block
       define_method method_name.to_s do |*thing|
@@ -84,7 +87,7 @@ class PageFactory
     # And spaces and dashes are converted to underscores.
     #
     # @example
-    #   link("Click Me For Fun!") #=> Creates the methods #click_me_for_fun and #click_me_for_fun_link
+    #   link("Click Me For Fun!") => Creates the methods #click_me_for_fun and #click_me_for_fun_link
     def link(link_text)
       element(damballa(link_text+"_link")) { |b| b.link(:text=>link_text) }
       action(damballa(link_text)) { |b| b.link(:text=>link_text).click }
@@ -98,9 +101,10 @@ class PageFactory
     # and the method for the button itself will have "_button" appended to it. Any special
     # characters are stripped from the string. Capital letters are made lower case.
     # And spaces and dashes are converted to underscores.
+    # @param button_text [String] The contents of the button's value tag in the HTML
     #
     # @example
-    #   button("Click Me For Fun!") #=> Creates the methods #click_me_for_fun and #click_me_for_fun_button
+    #   button("Click Me For Fun!") => Creates the methods #click_me_for_fun and #click_me_for_fun_button
     def button(button_text)
       element(damballa(button_text+"_button")) { |b| b.button(:value=>button_text) }
       action(damballa(button_text)) { |b| b.button(:value=>button_text).click }

@@ -43,6 +43,8 @@ module DataFactory
   # data object, it will get the value from the UI and set the data object's
   # variable to that value. Note that this only supports select lists that allow
   # a single selection.
+  # @param var [instance variable] The instance variable that will either be set or be used to update the page
+  # @param select_list [Watir::Select] The relevant select list element on the page
   #
   # @example
   #
