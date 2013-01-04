@@ -1,4 +1,4 @@
-rSmart's Test Factory Gem
+rSmart's TestFactory Gem
 =========================
 
 Overview
@@ -10,9 +10,9 @@ Use it to abstract away from the underlying [Watir](http://www.watir.com) code a
 
 With TestFactory you have the ability to...
 
-1. Easily instantiate pages in a consistent manner
-2. Concisely describe elements on a page, keeping it DRY by avoiding repetition of element identifiers
-3. Provide higher-level methods that use the page classes and elements to perform user-oriented functions, with minimal lines of code
+1. Easily instantiate page classes (described below) in a consistent and readable manner
+2. Concisely describe elements on a page, keeping it DRY by avoiding repetition of element identifiers that may (will) change
+3. Provide higher-level methods that use customizable (and default) data, along with the page classes and elements, to perform user-oriented functions with minimal lines of code
 
 Tremendous thanks is due to [Alister Scott](http://watirmelon.com), whose [custom page object code](https://github.com/alisterscott/wmf-custom-page-object) for the Wikimedia Foundation provided the inspiration for this gem.
 
@@ -22,7 +22,7 @@ Summary
 Using the TestFactory properly involves three distinct steps:
 
 1. Creating page classes that contain references to the elements on your web page. For this you use the PageFactory class. Working on page classes requires that you have a strong command of Watir and basic skills with Ruby.
-2. Creating data objects that utilize your page classes and elements to build methods that perform user-oriented tasks. For this you use the DataFactory module. Working on data objects requires you have good familiarity with Watir and strong Ruby skills.
+2. Creating "data objects" that utilize your page classes and elements to build methods that perform user-oriented tasks. For this you use the DataFactory module. Working on data objects requires you have good familiarity with Watir and strong Ruby skills.
 3. Creating test scenarios using your favorite test framework (like Cucumber or Rspec) and your data objects. The methods in the Foundry class are useful here. Working at this level requires only basic skills with Ruby and Watir, but a strong command of your DSL (the thing you're building with TestFactory).
 
 How to Start
@@ -147,7 +147,7 @@ include Foundry # Gives you access to the methods that instantiate your Page and
 
 on MyPage do |page|
   page.title.set "Bla bla"
-  # Very contrived example. You should be using your favorite verification framework here:
+  # Very contrived example. TestFactory was made to be test-framework-agnostic. You should be using your favorite verification framework here:
   page.description==@my_thing.description ? puts "Passed" : puts "Failed"
 end
 ```
@@ -155,7 +155,7 @@ end
 Notice
 ------
 
-Copyright 2012 rSmart, Inc., Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+Copyright 2013 rSmart, Inc., Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
 [http://www.osedu.org/licenses/ECL-2.0](http://www.osedu.org/licenses/ECL-2.0)
 
