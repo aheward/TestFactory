@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    test-factory (0.1.0)
+    test-factory (0.1.1)
       watir-webdriver (>= 0.6.1)
 
 GEM
