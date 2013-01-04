@@ -16,6 +16,15 @@ With TestFactory you have the ability to...
 
 Tremendous thanks is due to [Alister Scott](http://watirmelon.com), whose [custom page object code](https://github.com/alisterscott/wmf-custom-page-object) for the Wikimedia Foundation provided the inspiration for this gem.
 
+Summary
+-------
+
+Using the TestFactory properly involves three distinct steps:
+
+1. Creating page classes that contain references to the elements on your web page. For this you use the PageFactory class. Working on page classes requires that you have a strong command of Watir and basic skills with Ruby.
+2. Creating data objects that utilize your page classes and elements to build methods that perform user-oriented tasks. For this you use the DataFactory module. Working on data objects requires you have good familiarity with Watir and strong Ruby skills.
+3. Creating test scenarios using your favorite test framework (like Cucumber or Rspec) and your data objects. The methods in the Foundry class are useful here. Working at this level requires only basic skills with Ruby and Watir, but a strong command of your DSL (the thing you're building with TestFactory).
+
 How to Start
 ------------
 
