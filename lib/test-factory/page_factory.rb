@@ -22,7 +22,7 @@ class PageFactory
   class << self
 
     # Define this in a page class and when you use the "visit" method to instantiate the class
-    # it will enter the URL the browser's address bar.
+    # it will enter the URL in the browser's address bar.
     def page_url url
       define_method 'goto' do
         @browser.goto url

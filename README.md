@@ -39,11 +39,11 @@ class BasePage < PageFactory
   class << self
 
     def header_elements
-      element(:main_menu) { |b| b.link(title: "Main Menu") }
+      element(:main_menu_link) { |b| b.link(title: "Main Menu") }
       element(:logout) { |b| b.button(value: "Logout") }
       element(:administration) { |b| b.link(title: "Administration") }
 
-      action(:main_menu) { |p| p.main_menu.click }
+      action(:main_menu) { |p| p.main_menu_link.click }
       action(:provide_feedback) { |b| b.link(title: "Provide Feedback").click }
       action(:administration) { |p| p.administration.click }
     end
