@@ -32,7 +32,7 @@ First install the gem, of course.
 
     gem install test-factory
 
-Now you'll want to start building your own page classes, using the methods in Test Factory as your tool chest.
+Now you'll want to start building your own page classes, using the methods in TestFactory as your tool chest.
 
 Please note that the following example is *very* simplified and contrived, to keep every step as compartmentalized as possible. Once you've read through this, it is strongly recommended that you visit an actual repository that is using the test factory.
 
