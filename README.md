@@ -12,7 +12,7 @@ With TestFactory you have the ability to...
 
 1. Easily instantiate pages in a consistent manner
 2. Concisely describe elements on a page, keeping it DRY by avoiding repetition of element identifiers
-3. Provide higher-level methods that use the elements to perform user-oriented functions
+3. Provide higher-level methods that use the page classes and elements to perform user-oriented functions, with minimal lines of code
 
 Tremendous thanks is due to [Alister Scott](http://watirmelon.com), whose [custom page object code](https://github.com/alisterscott/wmf-custom-page-object) for the Wikimedia Foundation provided the inspiration for this gem.
 
