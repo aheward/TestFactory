@@ -92,23 +92,23 @@ class YourDataObject
   # These are some example attributes...
   attr_accessor :title, :id, :link, :status, :description
 
-  # Put any attributes here that you don't want to always have to define explicitly...
-  DEFAULTS = {
-      :title=>"My Data Title",
-      :description=>"My Data's Description"
-      # ...
-  }
-
   # Your data object has to know about Watir's browser object, so it's passed to it here, along
   # with a hash containing all the attributes you want the data object to have
   def initialize(browser, opts={})
     @browser = browser
 
-    # The set_options line combines the DEFAULTS
-    # with any options you passed explicitly,
+    # Put any attributes here that you don't want to always have to define explicitly...
+    defaults = {
+      :title=>"My Data Title",
+      :description=>"My Data's Description"
+      # ...
+    }
+
+    # The set_options line combines the defaults
+    # with any options you passed explicitly in opts,
     # then turns all the contents of the options
     # Hash into YourDataObject's class instance variables
-    set_options(DEFAULTS.merge(opts))
+    set_options(defaults.merge(opts))
 
     requires @id # This line allows you to specify any class instance variables that must
                  # be explicitly defined for the data object

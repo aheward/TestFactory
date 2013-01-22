@@ -30,6 +30,17 @@ module Foundry
     data_object_class.new @browser, opts
   end
 
+  # An extension of the #make method that simplifies and improves
+  # the readability of your "create" step definitions by
+  # combining the make with the create. Of course, this
+  # requires that your data object classes properly follow the design
+  # pattern and have a #create method available.
+  def create data_object_class, opts={}
+    data_object = make data_object_class, opts
+    data_object.create
+    data_object
+  end
+
   # A helper method that takes a block of code and waits until it resolves to true.
   # Useful when you need to wait for something to be on a page that's a little more
   # involved than a simple element (for those, you should use the #expected_element
