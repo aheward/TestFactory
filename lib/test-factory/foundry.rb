@@ -20,7 +20,7 @@ module Foundry
     block.call @current_page if block
     @current_page
   end
-  alias on_page on
+  alias_method :on_page, :on
 
   # Use this for making a data object in your test steps
   #
@@ -36,7 +36,7 @@ module Foundry
   # requires that your data object classes properly follow the design
   # pattern and have a #create method available.
   def create data_object_class, opts={}
-    data_object = make data_object_class, opts
+    data_object = make data_object_class, opts={}
     data_object.create
     data_object
   end
