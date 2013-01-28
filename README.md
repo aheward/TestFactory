@@ -156,6 +156,49 @@ on MyPage do |page|
 end
 ```
 
+Design Pattern
+--------------
+
+The TestFactory was written assuming that the following rules would be followed, to the maximum extent practical.
+
+1. Page Classes contain methods relating to interactions with page elements only--meaning the getting or setting of values, or the clicking of links or buttons. Any more complicated page interactions are handled in the Data Object classes, or in the test step definitions.
+2. Data Objects represent definable data structure entities in the system being tested. As data, they fit into the {CRUD Model}[http://en.wikipedia.org/wiki/Create,_read,_update_and_delete] and thus have methods that correspond to those basic functions.
+3. Data Objects have a single method for each of the CRUD functions, and additional custom methods are avoided without compelling arguments for their inclusion in the class.
+4. When editing Data Objects, first the data in the system under test is updated, then the data object's instance variables--using +set_options+.
+5. Navigation within the system under test is handled conditionally inside the Data Object methods unless there are specific reasons to explicitly navigate in a step definition.
+6. Specifying non-default test variables for data objects is done using key/value hash pairs, as follows:
+
+```ruby
+# During object creation, following the name of the class
+@data_object = make DataObject, :attrib1 => "Custom Value 1", :attrib2 => "Custom Value 2" # etc...
+
+# When an object is edited
+@data_object.edit attrib1: "Updated Value 1", attrib2: "Updated Value 2"
+
+```
+
+7. Updates to a data object's instance variables is handled *only* by the set_options method, *not* explicitly.
+
+```ruby
+# This is allowed
+def edit opts={}
+  #...
+  page.element.fit opts[:value]
+  #...
+  update_options(opts)
+end
+
+# This is not
+def edit opts={}
+  #...
+  page.element.fit opts[:value]
+  #...
+  @value=opts[:value] unless @value==opts[:value]
+end
+
+```
+8. The setting of random values for select lists in a data object is determined by passing the symbol +:random+ in the instance variable or as the value in the key/value pair passed in an +#edit+ method's +opts+ parameter. The +#create+ and +#edit+ methods will handle the necessary logic. The purpose is to prevent the need for custom randomizing CRUD methods in the data object.
+
 Notice
 ------
 
