@@ -159,7 +159,7 @@ end
 Design Pattern
 --------------
 
-The TestFactory was written assuming that the following rules would be followed, to the maximum extent practical.
+The TestFactory was written assuming that the following rules would be followed, to the maximum extent practical. Any code that does not follow these rules is probably not DRY.
 
 1.  Page Classes contain methods relating to interactions with page elements only--meaning the getting or setting of values, or the clicking of links or buttons. Any more complicated page interactions are handled in the Data Object classes, or in the test step definitions.
 2.  Data Objects represent definable data structure entities in the system being tested. As data, they fit into the [CRUD Model](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and thus have methods that correspond to those basic functions.
@@ -194,6 +194,7 @@ The TestFactory was written assuming that the following rules would be followed,
     end
     ```
 8.  The setting of random values for select lists in a data object is determined by passing the symbol `:random` in the instance variable or as the value in the key/value pair passed in an `#edit` method's `opts` parameter. The `#create` and `#edit` methods will handle the necessary logic. The purpose is to prevent the need for custom randomizing CRUD methods in the data object.
+9.  See the gem_ext.rb file's discussion of the Watir `#fit` method for additional design pattern rules to follow.
 
 Notice
 ------
