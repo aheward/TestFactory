@@ -18,7 +18,7 @@ module DataFactory
   #
   # @example
   #
-  #   requires @site @assignment
+  #   requires @site, @assignment
   #
   def requires(*elements)
     elements.each do |inst_var|
@@ -27,9 +27,11 @@ module DataFactory
   end
 
   # Transform for use with data object instance variables
-  # that refer to checkboxes or radio buttons.
+  # that refer to checkboxes or radio buttons. Instead of returning a boolean value, it returns
+  # the symbols :set or :clear -- This can be useful because those symbols can then in turn
+  # be passed directly as methods for updating or validating the checkbox later.
+  #
   # @param checkbox [Watir::CheckBox] The checkbox on the page that you want to inspect
-  # @returns :set or :clear
   def checkbox_setting(checkbox)
     checkbox.set? ? :set : :clear
   end
@@ -41,6 +43,8 @@ module DataFactory
   # data object, it will get the value from the UI and set the data object's
   # variable to that value. Note that this only supports select lists that allow
   # a single selection.
+  # @param var [instance variable] The instance variable that will either be set or be used to update the page
+  # @param select_list [Watir::Select] The relevant select list element on the page
   #
   # @example
   #

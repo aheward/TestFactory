@@ -45,7 +45,7 @@ module StringFactory
   # @param length [Integer] The count of characters in the string
   # @param s [String] Typically this will be left blank, but if included, any string created will be prepended with s. Note that the string length will still be as specified
   def random_alphanums_plus(length=10, s="")
-    chars = %w{ a b c d e f g h j k m n p q r s t u v w x y z A B C D E F G H J K L M N P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 ` ~ ! @  # $% ^ & * ( ) _ + - = { } [ ] \ : " ; ' < > ? , . / }
+    chars = %w{ a b c d e f g h j k m n p q r s t u v w x y z A B C D E F G H J K L M N P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 ` ~ ! @  # $ % ^ & * ( ) _ + - = { } [ ] \\ : " ; ' < > ? , . / }
     length.times { s << chars[rand(chars.size)] }
     s.to_s
   end
@@ -119,14 +119,14 @@ module StringFactory
   end
 
   # Converts a string to a symbol made up of snake case. Spaces and dashes are changed to underscore. Special characters are removed.
+  # @param text [String] The text to be converted to snake case.
   # @example
   #   damballa("A String of Fun Stuff (for you)") => :a_string_of_fun_stuff_for_you
-  def damballa(text)
+  def self.damballa(text)
     text.gsub(/([+=|\\\.~@#'"\?`!\{\}\[\]\$%\^&\*\(\)])/, "").
         gsub(/([-\/\ ])/,"_").
         downcase.
         to_sym
   end
-  module_function :damballa
 
 end
