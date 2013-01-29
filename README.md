@@ -11,8 +11,11 @@ Use it to abstract away from the underlying [Watir](http://www.watir.com) code a
 With TestFactory you have the ability to...
 
 1. Easily instantiate page classes (described below) in a consistent and readable manner
-2. Concisely describe elements on a page, keeping it DRY by avoiding repetition of element identifiers that may (will) change
-3. Provide higher-level methods that use customizable (and default) data, along with the page classes and elements, to perform user-oriented functions with minimal lines of code
+2. Concisely describe elements on a page, keeping it DRY by avoiding repetition of element
+   identifiers that may (will) change
+3. Provide higher-level methods that use customizable (and default) data, along with the
+   page classes and elements, to perform user-oriented--i.e., behavioral--functions
+   with minimal lines of code
 
 Tremendous thanks is due to [Alister Scott](http://watirmelon.com), whose [custom page object code](https://github.com/alisterscott/wmf-custom-page-object) for the Wikimedia Foundation provided the inspiration for this gem.
 
@@ -21,9 +24,16 @@ Summary
 
 Using the TestFactory properly involves three distinct steps:
 
-1. Creating page classes that contain references to the elements on your web page. For this you use the PageFactory class. Working on page classes requires that you have a strong command of Watir and basic skills with Ruby.
-2. Creating "data objects" that utilize your page classes and elements to build methods that perform user-oriented tasks. For this you use the DataFactory module. Working on data objects requires you have good familiarity with Watir and strong Ruby skills.
-3. Creating test scenarios using your favorite test framework (like Cucumber or Rspec) and your data objects. The methods in the Foundry class are useful here. Working at this level requires only basic skills with Ruby and Watir, but a strong command of your DSL (the thing you're building with TestFactory).
+1. Creating page classes that contain references to the elements on your web page. For this
+   you use the PageFactory class. Working on page classes requires that you have a strong
+   command of Watir and basic skills with Ruby.
+2. Creating "data objects" that utilize your page classes and elements to build methods that
+   perform user-oriented tasks. For this you use the DataFactory module. Working on data
+   objects requires you have good familiarity with Watir and strong Ruby skills.
+3. Creating test scenarios using your favorite test framework (like Cucumber or Rspec) and
+   your data objects. The methods in the Foundry class are useful here. Working at this
+   level requires only basic skills with Ruby and Watir, but a strong command of your DSL
+   (the thing you're building with TestFactory).
 
 How to Start
 ------------
@@ -159,14 +169,26 @@ end
 Design Pattern
 --------------
 
-The TestFactory was written assuming that the following rules would be followed, to the maximum extent practical. Any code that does not follow these rules is probably not DRY.
+The TestFactory was written assuming the following guiding principles. Any code that does not follow them is probably not DRY.
 
-1.  Page Classes contain methods relating to interactions with page elements only--meaning the getting or setting of values, or the clicking of links or buttons. Any more complicated page interactions are handled in the Data Object classes, or in the test step definitions.
-2.  Data Objects represent definable data structure entities in the system being tested. As data, they fit into the [CRUD Model](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and thus have methods that correspond to those basic functions.
-3.  Data Objects have a single method for each of the CRUD functions, and additional custom methods are avoided without compelling arguments for their inclusion in the class.
-4.  When editing Data Objects, first the data in the system under test is updated, then the data object's instance variables--using `set_options`.
-5.  Navigation within the system under test is handled conditionally inside the Data Object methods unless there are specific reasons to explicitly navigate in a step definition.
-6.  Specifying non-default test variables for data objects is done using key/value hash pairs, as follows:
+1.  Page Classes contain methods relating to interactions with page elements only--meaning
+    the getting or setting of values, or the clicking of links or buttons. Any more
+    complicated page interactions are handled in the Data Object classes, or in the test
+    step definitions.
+2.  Data Objects represent definable data structure entities in the system being tested.
+    As data, they fit into the [CRUD Model](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
+    and thus have methods that correspond to those basic functions.
+3.  Data Objects have a single method for each of the CRUD functions, and additional
+    custom methods are avoided without compelling arguments for their inclusion in the class.
+4.  When a Data Object is executing its `edit` method, first the data in the
+    system under test is updated, then the data object's instance variables
+    are updated--using `set_options`.
+5.  Site navigation is handled using conditional methods (meaning they only navigate if
+    necessary) inside the Data Object, unless there are specific reasons to explicitly
+    navigate in a step definition. This keeps step definitions from being unnecessarily cluttered.
+6.  Specifying non-default test variables for data objects is done using key/value hash
+    pairs that are parameters of the data object's CRUD methods. It is _not_
+    done by explicitly assigning values to the instance variables. Examples:
     ```ruby
     # During object creation, following the name of the class
     @data_object = make DataObject, :attrib1 => "Custom Value 1", :attrib2 => "Custom Value 2" # etc...
@@ -174,10 +196,13 @@ The TestFactory was written assuming that the following rules would be followed,
     # When an object is edited (Ruby v1.9.3 Hash syntax optional)
     @data_object.edit attrib1: "Updated Value 1", attrib2: "Updated Value 2"
 
+    # This is frowned upon:
+    @data_object.attrib1="Another Value"
+
     ```
 7.  Updates to a data object's instance variables is handled *only* by the `set_options` method, *not* explicitly.
     ```ruby
-    # This is allowed
+    # This is good
     def edit opts={}
       #...
       page.element.fit opts[:value]
@@ -185,7 +210,7 @@ The TestFactory was written assuming that the following rules would be followed,
       update_options(opts)
     end
 
-    # This is not
+    # This is not good
     def edit opts={}
       #...
       page.element.fit opts[:value]
@@ -193,8 +218,13 @@ The TestFactory was written assuming that the following rules would be followed,
       @value=opts[:value] unless @value==opts[:value]
     end
     ```
-8.  The setting of random values for select lists in a data object is determined by passing the symbol `:random` in the instance variable or as the value in the key/value pair passed in an `#edit` method's `opts` parameter. The `#create` and `#edit` methods will handle the necessary logic. The purpose is to prevent the need for custom randomizing CRUD methods in the data object.
-9.  See the gem_ext.rb file's discussion of the Watir `#fit` method for additional design pattern rules to follow.
+8.  The setting of random values for select lists in a data object is determined by passing
+    the symbol `:random` in the instance variable or as the value in the key/value pair
+    passed in an `#edit` method's `opts` parameter. The `#create` and `#edit` methods will
+    handle the necessary logic. The purpose is to prevent the need for custom randomizing
+    CRUD methods in the data object.
+9.  See the gem_ext.rb file's discussion of the Watir `#fit` method for additional
+    design pattern rules to follow.
 
 Notice
 ------
