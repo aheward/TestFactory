@@ -169,7 +169,8 @@ end
 Design Pattern
 --------------
 
-The TestFactory was written assuming the following guiding principles. Any code that does not follow them is probably not DRY.
+The TestFactory was written assuming the following guiding principles. Any code that does not
+follow them probably [smells](http://en.wikipedia.org/wiki/Code_smell), and should be refactored.
 
 1.  Page Classes contain methods relating to interactions with page elements only--meaning
     the getting or setting of values, or the clicking of links or buttons. Any more
@@ -182,10 +183,11 @@ The TestFactory was written assuming the following guiding principles. Any code 
     custom methods are avoided without compelling arguments for their inclusion in the class.
 4.  When a Data Object is executing its `edit` method, first the data in the
     system under test is updated, then the data object's instance variables
-    are updated--using `set_options`.
+    are updated--using DataFactory's `set_options`.
 5.  Site navigation is handled using conditional methods (meaning they only navigate if
-    necessary) inside the Data Object, unless there are specific reasons to explicitly
-    navigate in a step definition. This keeps step definitions from being unnecessarily cluttered.
+    necessary) inside the Data Object--and preferably inside the data object's CRUD methods
+    themselves--unless there are specific reasons to explicitly navigate in a step
+    definition. This keeps step definitions from being unnecessarily cluttered.
 6.  Specifying non-default test variables for data objects is done using key/value hash
     pairs that are parameters of the data object's CRUD methods. It is _not_
     done by explicitly assigning values to the instance variables. Examples:
@@ -193,10 +195,12 @@ The TestFactory was written assuming the following guiding principles. Any code 
     # During object creation, following the name of the class
     @data_object = make DataObject, :attrib1 => "Custom Value 1", :attrib2 => "Custom Value 2" # etc...
 
-    # When an object is edited (Ruby v1.9.3 Hash syntax optional)
+    # When an object is edited (using Ruby v1.9.3's Hash syntax is optional)
     @data_object.edit attrib1: "Updated Value 1", attrib2: "Updated Value 2"
 
-    # This is frowned upon:
+    # This is frowned upon because it can easily lead to
+    # the data object and the data in the test site being
+    # out of sync, leading to a false negative test result:
     @data_object.attrib1="Another Value"
 
     ```
