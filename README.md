@@ -191,6 +191,7 @@ follow them probably [smells](http://en.wikipedia.org/wiki/Code_smell), and shou
 *  Specifying non-default test variables for data objects is done using key/value hash
    pairs that are parameters of the data object's CRUD methods. It is _not_
    done by explicitly assigning values to the instance variables. Examples:
+
 ```ruby
 # During object creation, following the name of the class
 @data_object = make DataObject, :attrib1 => "Custom Value 1", :attrib2 => "Custom Value 2" # etc...
@@ -204,7 +205,9 @@ follow them probably [smells](http://en.wikipedia.org/wiki/Code_smell), and shou
 @data_object.attrib1="Another Value"
 
 ```
+
 *  Updates to a data object's instance variables is handled *only* by the `set_options` method, *not* explicitly.
+
 ```ruby
 # This is good
 def edit opts={}
@@ -222,6 +225,7 @@ def edit opts={}
   @value=opts[:value] unless @value==opts[:value]
 end
 ```
+
 *  The setting of random values for select lists in a data object is determined by passing
    the symbol `:random` in the instance variable, or as the value in the key/value pair
    passed in an `#edit` method's `opts` parameter. The `#create` and `#edit` methods will
