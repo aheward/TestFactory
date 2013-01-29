@@ -206,7 +206,7 @@ follow them probably [smells](http://en.wikipedia.org/wiki/Code_smell), and shou
 
 ```
 
-*  Updates to a data object's instance variables is handled *only* by the `set_options` method, *not* explicitly.
+*  Updates to a data object's instance variables are handled *only* by the `set_options` method, *not* explicitly.
 
 ```ruby
 # This is good

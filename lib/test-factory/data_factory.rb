@@ -49,11 +49,12 @@ module DataFactory
   # @example
   #
   #   @num_resubmissions = get_or_set(@num_resubmissions, page.num_resubmissions)
-  def get_or_select(var, select_list)
-    if var==nil
-      select_list.selected_options[0].text
+  def self.get_or_select!(inst_var_sym)
+    value = instance_variable_get inst_var_sym
+    if value==nil
+      instance_variable_set inst_var_sym, self.selected_options[0].text
     else
-      select_list.select var
+      self.select value
     end
   end
 
