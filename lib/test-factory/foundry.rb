@@ -14,12 +14,13 @@ module Foundry
   # method when you are already on the site page you want to interact with.
   # @param page_class [Class] the name of the page class that you want to instantiate
   # @param visit [TrueClass, FalseClass] Essentially you will never have to specify this explicitly
+  # @param &block [C] this is the block of code that you want to run while on the given page
   def on page_class, visit=false, &block
     @current_page = page_class.new @browser, visit
     block.call @current_page if block
     @current_page
   end
-  alias on_page on
+  alias_method :on_page, :on
 
   # Use this for making a data object in your test steps
   #
@@ -27,6 +28,17 @@ module Foundry
   # @param opts [Hash] The list of attributes you want to give to your data object
   def make data_object_class, opts={}
     data_object_class.new @browser, opts
+  end
+
+  # An extension of the #make method that simplifies and improves
+  # the readability of your "create" step definitions by
+  # combining the make with the create. Of course, this
+  # requires that your data object classes properly follow the design
+  # pattern and have a #create method available.
+  def create data_object_class, opts={}
+    data_object = make data_object_class, opts
+    data_object.create
+    data_object
   end
 
   # A helper method that takes a block of code and waits until it resolves to true.
