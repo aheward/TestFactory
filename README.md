@@ -233,6 +233,7 @@ end
    CRUD methods in the data object.
 *  See the gem_ext.rb file's discussion of the Watir `#fit` method for additional
    design pattern rules to follow.
+*  Please make an effort to follow the [Ruby Style Guidelines](http://www.caliban.org/ruby/rubyguide.shtml#style).
 
 Notice
 ------
