@@ -14,9 +14,17 @@
 # Proper use of the +#fit+ method requires following a particular coding
 # pattern, however:
 #
-# 1. In your Page Classes, define your text fields, select lists, radio buttons, and checkboxes directly. Do not define +#select+, +#set+ and/or +#clear+ actions there.
-# 2. Your data object's instance variables for radio buttons and checkboxes, when not +nil+, should have the values of +:set+ or +:clear+. If they *need* to be something else, then define a Hash transform method to easily convert the custom values back to +:set+ or +:clear+, then pass that transform to the +#fit+ method.
-# 3. Always remember to end your +#edit+ methods with the +#set_options()+ method (a.k.a. +#update_options+), from the DataFactory module. It automatically takes care of updating your data object's instance variables with any new values.
+# * In your Page Classes, define your text field, select list, radio button, and
+#   checkbox elements directly. Do not define +#select+, +#set+ and/or +#clear+
+#   actions there.
+# * Your data object's instance variables for radio buttons and checkboxes, when
+#   not +nil+, should have the values of +:set+ or +:clear+. If they *need* to be
+#   something else, then define a Hash transform method to easily convert the
+#   custom values back to +:set+ or +:clear+, then pass that transform to the +#fit+ method.
+# * Always remember to end your +#edit+ methods with the +#set_options()+
+#   method (a.k.a. +#update_options+), from the DataFactory module. It
+#   automatically takes care of updating your data object's instance variables
+#   with any new values.
 #
 # ==Example
 #

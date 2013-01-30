@@ -36,7 +36,7 @@ module Foundry
   # requires that your data object classes properly follow the design
   # pattern and have a #create method available.
   def create data_object_class, opts={}
-    data_object = make data_object_class, opts={}
+    data_object = make data_object_class, opts
     data_object.create
     data_object
   end
