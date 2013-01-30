@@ -37,13 +37,34 @@ module DataFactory
   end
   alias radio_setting checkbox_setting
 
-  # Use this method in your data object class for select list boxes that will have
-  # default values you may be interested in. The method will either set the select
-  # box to the value specified, or, if no value exists for the given instance variable in your
-  # data object, it will get the value from the UI and set the data object's
-  # variable to that value. Note that this only supports select lists that allow
-  # a single selection.
-  # @param inst_var_sym [Symbol] A Symbol that _must_ match the instance variable that will either be set or be used to update the page
+  # This is a specialized method for use with select list boxes
+  # that will contain unpredictable default values.
+  # Admittedly, this is a bit unusual, but one example would be
+  # be a "due date" list that changes its default selection based
+  # on today's date. You may want to store that default for later
+  # confirmation, or you may want to set it to your own value.
+  #
+  # Enter: #get_or_select!
+  #
+  # Assuming you just want to store the default value, then your
+  # Data Object's instance variable for the field will be nil. In
+  # that case, #get_or_select! will grab that value from the field
+  # and store it in your instance variable.
+  #
+  # On the other hand, if you want to update that field with your
+  # custom value, then your instance variable will not be nil, so
+  # #get_or_select! will take that value and use it to update the
+  # select list.
+  #
+  # Note that this method *only* works with select lists that take
+  # a single selection. Multi-selects are not supported.
+  #
+  # Also note that the first parameter is *not* the instance variable
+  # you need to use/update. It is a *symbol* that otherwise matches
+  # the instance variable.
+  #
+  # @param inst_var_sym [Symbol] A Symbol that _must_ match the instance variable that
+  # will either be set or be used to update the page
   # @param select_list [Watir::Select] The relevant select list element on the page
   #
   # @example
@@ -60,12 +81,14 @@ module DataFactory
 
   # This method accomplishes the same thing as #get_or_select! but
   # is used specifically when the instance variable being used/updated
-  # is a Hash. Pay close attention to the syntax differences between
-  # this method and @get_or_select!
+  # is a Hash and you only need to update one of its key/value pairs.
   #
-  # First, note that the returned value of this method must be
-  # passed to the relevant key in the Hash. Note also that unlike
-  # #get_or_select!, this method does not take a symbol representation
+  # Pay close attention to the syntax differences between
+  # this method and #get_or_select!
+  #
+  # First, note that the returned value of this method must be explicitly
+  # passed to the relevant key in the Hash. Note also that, unlike
+  # #get_or_select!, this method does *not* take a symbol representation
   # of the instance variable.
   #
   # @example
