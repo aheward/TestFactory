@@ -62,7 +62,10 @@
 #     # ...
 #   end
 #
-# Now, let's take that same code, but this time use the +#fit+ method, assume that
+# That's just nasty! Your Page Class has two element definitions that are nearly identical.
+# And the nested conditional in the Data Object's #edit method hurts the eyes!
+#
+# Now, let's take that same code, but this time use the +#fit+ method. We'll assume that
 # the data object's +@option+ instance variable will be +:set+, +:clear+, or +nil+, and
 # end the +#edit+ with the DataFactory's +#set_options+ helper method...
 #
@@ -86,6 +89,8 @@
 #     end
 #     # ...
 #   end
+#
+# Much cleaner!
 #
 # If you absolutely _must_ have your data object's instance variable be something
 # other than +:set+ or +:clear+, then consider writing a private transform method
