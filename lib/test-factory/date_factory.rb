@@ -7,6 +7,7 @@ module DateFactory
   # various parts of the relevant date.
   # @param time_object [Time] the moment you want to convert
   # @returns [Hash] a hash object containing various parts of the date/time you passed to the method
+  #
   def date_factory(time_object)
     {
         :sakai=>make_date(time_object),
@@ -71,6 +72,7 @@ module DateFactory
   # the count of minutes as the parameter, and
   # returns the date_factory hash for the
   # resulting Time value.
+  #
   def minutes_ago(mins)
     date_factory(Time.now - mins*60)
   end
@@ -82,6 +84,7 @@ module DateFactory
   # Returns the current month as an
   # upper-case 3-letter string.
   # example: "JUL"
+  #
   def current_month
     Time.now.strftime("%^b")
   end
@@ -126,6 +129,7 @@ module DateFactory
   #
   # @param time_object [Time] the moment that you want converted to the string
   # @returns [String] a date formatted to look like this: Jun 8, 2012 12:02 pm
+  #
   def make_date(time_object)
     month = time_object.strftime("%b ")
     day = time_object.strftime("%-d")

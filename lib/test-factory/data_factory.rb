@@ -4,6 +4,7 @@ module DataFactory
   # Add this to the bottom of your Data Object's initialize method.
   # Converts the contents of the hash into the class's instance variables.
   # @param hash [Hash] Contains all options required for creating the needed Data Object
+  #
   def set_options(hash)
     hash.each do |key, value|
       instance_variable_set("@#{key}", value)
@@ -12,8 +13,7 @@ module DataFactory
   alias update_options set_options
 
   # Items passed to this method are checked to ensure that the associated class instance variable
-  # is not nil. If it is, the script is aborted and an error is thrown, describing what information
-  # the Data Object requires before the script can run.
+  # is not nil. If it is, the script is aborted and an error is thrown.
   # @param elements [Array] the list of items that are required.
   #
   # @example
@@ -32,24 +32,30 @@ module DataFactory
   # be passed directly as methods for updating or validating the checkbox later.
   #
   # @param checkbox [Watir::CheckBox] The checkbox on the page that you want to inspect
+  #
   def checkbox_setting(checkbox)
     checkbox.set? ? :set : :clear
   end
   alias radio_setting checkbox_setting
 
-  # This is a specialized method for use with select list boxes
-  # that will contain unpredictable default values.
+  # This is a specialized method for use with any select list boxes
+  # that exist in the site you're testing and will contain
+  # unpredictable default values.
+  #
   # Admittedly, this is a bit unusual, but one example would be
   # be a "due date" list that changes its default selection based
-  # on today's date. You may want to store that default for later
-  # confirmation, or you may want to set it to your own value.
+  # on today's date. You're going to want to do one of two things
+  # with that select list:
+  #
+  # 1) Retrieve and store the select list's value
+  # 2) Specify a custom value to select
   #
   # Enter: #get_or_select!
   #
   # Assuming you just want to store the default value, then your
-  # Data Object's instance variable for the field will be nil. In
-  # that case, #get_or_select! will grab that value from the field
-  # and store it in your instance variable.
+  # Data Object's instance variable for the field will--initially--be
+  # nil. In that case, #get_or_select! will grab the select list's
+  # current value and store it in your instance variable.
   #
   # On the other hand, if you want to update that field with your
   # custom value, then your instance variable will not be nil, so
@@ -70,6 +76,7 @@ module DataFactory
   # @example
   #
   #   get_or_select! :@num_resubmissions, page.num_resubmissions
+  #
   def get_or_select!(inst_var_sym, select_list)
     value = instance_variable_get inst_var_sym
     if value==nil
@@ -87,13 +94,14 @@ module DataFactory
   # this method and #get_or_select!
   #
   # First, note that the returned value of this method must be explicitly
-  # passed to the relevant key in the Hash. Note also that, unlike
-  # #get_or_select!, this method does *not* take a symbol representation
+  # passed to the relevant key in the Hash instance variable. Note also that, unlike
+  # #get_or_select!, this method does *not* take a symbolized representation
   # of the instance variable.
   #
   # @example
   #
   #   @open[:day] = get_or_select(@open[:day], page.open_day)
+  #
   def get_or_select(hash_inst_var, select_list)
     if hash_inst_var==nil
       select_list.selected_options[0].text
