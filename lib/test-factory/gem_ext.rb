@@ -132,6 +132,16 @@ module Watir
     def fit(str_or_rx)
       select_by :text, str_or_rx unless str_or_rx==nil
     end
+
+    def select_at_random
+      text_array = []
+      options.each { |opt| text_array << opt.text }
+      text_array.delete_if { |text| text=="select" }
+      text_array.shuffle!
+      select text_array[0]
+      text_array[0]
+    end
+
   end
 
 end
