@@ -133,6 +133,8 @@ module Watir
       select_by :text, str_or_rx unless str_or_rx==nil
     end
 
+    # Use with a select box when you want to select a random
+    # item from the list.
     def select_at_random
       text_array = []
       options.each { |opt| text_array << opt.text }

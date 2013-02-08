@@ -27,6 +27,7 @@ module DateFactory
         minute_rounded: (Time.at(time_object.to_i/(5*60)*(5*60))).strftime("%M"), # => "05" Zero-padded, rounded to 5-minute increments
         meridian:       time_object.strftime("%P"), # => "pm"
         MERIDIAN:       time_object.strftime("%p"), # => "AM"
+        date_w_slashes: time_object.strftime("%m/%d/%Y"), # => 02/08/2013
         custom:         time_object # => Allows creation of a custom date string using the passed time value.
     }
   end
