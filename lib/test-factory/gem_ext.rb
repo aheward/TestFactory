@@ -124,17 +124,40 @@ module Watir
   end
 
   class Select
+
     # Extends Watir's methods.
     # Use when the argument you are passing to a text field
     # may be nil, in which case you don't
     # want to do anything with the page element.
+    # @example
+    #   page.select_list.fit @my_selection
     #
     def fit(str_or_rx)
       select_by :text, str_or_rx unless str_or_rx==nil
     end
 
-    # Use with a select box when you want to select a random
-    # item from the list.
+    # Allows you to select an item from a selection list
+    # at random. It returns the selected item so that
+    # the data object's class instance variable will
+    # have the correct value.
+    #
+    # In other words, proper use of this method involves
+    # setting the associated class instance variable
+    # with it, like so...
+    # @example
+    #   @my_selection=page.select_list.pick @my_selection
+    #
+    def pick(item)
+      if item==:random
+        select_at_random
+      else
+        fit item
+        item
+      end
+    end
+
+    private
+
     def select_at_random
       text_array = []
       options.each { |opt| text_array << opt.text }
