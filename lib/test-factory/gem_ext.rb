@@ -145,7 +145,9 @@ module Watir
     # setting the associated class instance variable
     # with it, like so...
     # @example
+    #   @my_selection=:random
     #   @my_selection=page.select_list.pick @my_selection
+    #   puts @my_selection # => <Value of randomly selected item from list>
     #
     def pick(item)
       if item==:random
@@ -161,7 +163,7 @@ module Watir
     def select_at_random
       text_array = []
       options.each { |opt| text_array << opt.text }
-      text_array.delete_if { |text| text=="select" }
+      text_array.delete_if { |text| text=="select" || text=="" }
       text_array.shuffle!
       select text_array[0]
       text_array[0]
