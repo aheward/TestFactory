@@ -13,16 +13,32 @@ module DataFactory
   alias update_options set_options
 
   # Items passed to this method are checked to ensure that the associated class instance variable
-  # is not nil. If it is, the script is aborted and an error is thrown.
+  # is not nil. If it is, the script is aborted and an error is thrown. Use symbols separated
+  # by commas with this method. The symbol(s) should exactly match the name of the instance
+  # variable that must not be empty.
+  #
+  # NOTE: Currently this is backwards compatible with prior versions, which took the instance
+  # variables directly in the parameter. This backwards compatibility will be removed in
+  # some future update of the gem.
+  #
   # @param elements [Array] the list of items that are required.
   #
   # @example
   #
-  #   requires @site, @assignment
+  #   requires :site, :assignment, :document_id
   #
   def requires(*elements)
     elements.each do |inst_var|
-      raise "You've neglected to define a required variable for the #{self}." if inst_var==nil
+      if inst_var.kind_of? Symbol
+        string="@#{inst_var.to_s}"
+        if instance_variable_get(string)==nil
+          raise "You've neglected to define a required variable for your #{self.class}.\n\nPlease ensure you always specify a value for #{string} when you create the data object."
+        end
+      elsif inst_var.kind_of? String
+        warn "<<<<WARNING!>>>>\n\nPlease update the requires method in your\n#{self.class} class to refer to symbols\ninstead of directly referencing the class'\ninstance variables.\n\n  Example:\n\n    This...\n      requires @document_id\n    Should be updated to...\n      requires :document_id\n\nIn future versions of TestFactory the 'requires'\nmethod will only support symbolized references\nto the instance variables. The backwards\ncompatibility will be removed.\n\n<<<<WARNING!>>>>"
+      elsif inst_var==nil
+        raise "You've neglected to define a required variable for your #{self.class}.\n\n<<<<WARNING!>>>>\n\nPlease update the requires method in your #{self} class to refer to symbols\ninstead of directly referencing the class'\ninstance variables.\n\nIn future versions of TestFactory the 'requires' method\nwill only support symbolized references\nto the instance variables. The backwards\ncompatibility will be removed.\n\n<<<<WARNING!>>>>"
+      end
     end
   end
 
