@@ -119,6 +119,7 @@ class PageFactory
       action(damballa(button_text)) { |b| b.button(:value=>button_text).click }
     end
 
+    private
     # A helper method that converts the passed string into snake case. See the StringFactory
     # module for more info.
     #

@@ -164,9 +164,9 @@ module Watir
       text_array = []
       options.each { |opt| text_array << opt.text }
       text_array.delete_if { |text| text=="select" || text=="" }
-      text_array.shuffle!
-      select text_array[0]
-      text_array[0]
+      item = text_array.sample
+      select item
+      item
     end
 
   end
