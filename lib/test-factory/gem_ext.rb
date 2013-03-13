@@ -136,25 +136,26 @@ module Watir
       select_by :text, str_or_rx unless str_or_rx==nil
     end
 
-    # Allows you to select an item from a selection list
-    # at random. It returns the selected item so that
-    # the data object's class instance variable will
-    # have the correct value.
+    # Allows you to select a specific item in a
+    # select list, or, if desired, it will pick an item from
+    # the list at random.
     #
-    # In other words, proper use of this method involves
-    # setting the associated class instance variable
-    # with it, like so...
+    # If you pass this method the string '::random::' then
+    # it will select an item at random from the select
+    # list and, assuming what you passed it was a class instance
+    # variable, it will be updated to contain the
+    # selected value (hence the ! in the method name).
+    #
     # @example
-    #   @my_selection=:random
-    #   @my_selection=page.select_list.pick @my_selection
+    #   @my_selection='::random::'
+    #   page.select_list.pick! @my_selection
     #   puts @my_selection # => <Value of randomly selected item from list>
     #
-    def pick(item)
-      if item==:random
-        select_at_random
+    def pick!(item)
+      if item=='::random::'
+        item.replace(select_at_random)
       else
         fit item
-        item
       end
     end
 
@@ -163,7 +164,7 @@ module Watir
     def select_at_random
       text_array = []
       options.each { |opt| text_array << opt.text }
-      text_array.delete_if { |text| text=="select" || text=="" }
+      text_array.delete_if { |text| text=='select' || text=='' }
       item = text_array.sample
       select item
       item
