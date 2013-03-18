@@ -96,9 +96,18 @@ class PageFactory
     # @example
     #   link("Click Me For Fun!") => Creates the methods #click_me_for_fun and #click_me_for_fun_link
     #
-    def link(link_text)
-      element(damballa(link_text+"_link")) { |b| b.link(:text=>link_text) }
-      action(damballa(link_text)) { |b| b.link(:text=>link_text).click }
+    # The last parameter in the method is optional (and can be multiple items).
+    # If you need to create an alias method name because the text of the link
+    # was changed and you aren't too keen on updating all of the code that uses the
+    # link, then put the alias name(s) as parameter(s). They should be symbols,
+    # and match the action method name you want (the element method name will be
+    # created for you automatically).
+    #
+    # @example
+    #   link('Click This Thing!', :click_thing, :click_thang) => Creates six methods: #click_this_thing, #click_this_thing_link, #click_thing, #click_thing_link, #click_thang, #click_thang_link
+    #
+    def link(link_text, *alias_name)
+      elementize(:link, link_text, *alias_name)
     end
 
     # Use this for buttons that are safe to define by their value attribute.
@@ -114,9 +123,18 @@ class PageFactory
     # @example
     #   button("Click Me For Fun!") => Creates the methods #click_me_for_fun and #click_me_for_fun_button
     #
-    def button(button_text)
-      element(damballa(button_text+"_button")) { |b| b.button(:value=>button_text) }
-      action(damballa(button_text)) { |b| b.button(:value=>button_text).click }
+    # The last parameter in the method is optional (and can be multiple items).
+    # If you need to create an alias method name because the text of the button
+    # was changed and you aren't too keen on updating all of the code that uses the
+    # button, then put the alias name(s) as parameter(s). They should be symbols,
+    # and match the action method name you want (the element method name will be
+    # created for you automatically).
+    #
+    # @example
+    #   button('Click This Thing!', :click_thing, :click_thang) => Creates six methods: #click_this_thing, #click_this_thing_button, #click_thing, #click_thing_button, #click_thang, #click_thang_button
+    #
+    def button(button_text, *alias_name)
+      elementize(:button, button_text, *alias_name)
     end
 
     private
@@ -125,6 +143,18 @@ class PageFactory
     #
     def damballa(text)
       StringFactory::damballa(text)
+    end
+
+    def elementize(type, text, *alias_name)
+      hash={:link=>:text, :button=>:value}
+      el_name=damballa("#{text}_#{type}")
+      act_name=damballa(button_text)
+      element(el_name) { |b| b.send(type, hash[type]=>text) }
+      action(act_name) { |b| b.send(type, hash[type]=>text).click }
+      alias_name.each do |name|
+        alias_method "#{name}_#{type}".to_sym, el_name
+        alias_method name, act_name
+      end
     end
 
   end
