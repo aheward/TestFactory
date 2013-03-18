@@ -96,15 +96,14 @@ class PageFactory
     # @example
     #   link("Click Me For Fun!") => Creates the methods #click_me_for_fun and #click_me_for_fun_link
     #
-    # The last parameter in the method is optional (and can be multiple items).
-    # If you need to create an alias method name because the text of the link
-    # was changed and you aren't too keen on updating all of the code that uses the
-    # link, then put the alias name(s) as parameter(s). They should be symbols,
-    # and match the action method name you want (the element method name will be
-    # created for you automatically).
+    # The last parameter in the method is optional. Use it when
+    # you need the method name to be different from the text of
+    # the link--for example if the link text changes and you don't
+    # want to have to go through all your data objects and step
+    # definitions to update them to the new method name.
     #
     # @example
-    #   link('Click This Thing!', :click_thing, :click_thang) => Creates six methods: #click_this_thing, #click_this_thing_link, #click_thing, #click_thing_link, #click_thang, #click_thang_link
+    #   link("Click Me For Fun!", :click_me) => Creates the methods #click_me and #click_me_link
     #
     def link(link_text, *alias_name)
       elementize(:link, link_text, *alias_name)
@@ -123,15 +122,14 @@ class PageFactory
     # @example
     #   button("Click Me For Fun!") => Creates the methods #click_me_for_fun and #click_me_for_fun_button
     #
-    # The last parameter in the method is optional (and can be multiple items).
-    # If you need to create an alias method name because the text of the button
-    # was changed and you aren't too keen on updating all of the code that uses the
-    # button, then put the alias name(s) as parameter(s). They should be symbols,
-    # and match the action method name you want (the element method name will be
-    # created for you automatically).
+    # The last parameter in the method is optional. Use it when
+    # you need the method name to be different from the text of
+    # the button--for example if the button text changes and you don't
+    # want to have to go through all your data objects and step
+    # definitions to update them to the new method name.
     #
     # @example
-    #   button('Click This Thing!', :click_thing, :click_thang) => Creates six methods: #click_this_thing, #click_this_thing_button, #click_thing, #click_thing_button, #click_thang, #click_thang_button
+    #   link("Click Me For Fun!", :click_me) => Creates the methods #click_me and #click_me_link
     #
     def button(button_text, *alias_name)
       elementize(:button, button_text, *alias_name)
@@ -147,14 +145,15 @@ class PageFactory
 
     def elementize(type, text, *alias_name)
       hash={:link=>:text, :button=>:value}
-      el_name=damballa("#{text}_#{type}")
-      act_name=damballa(button_text)
+      if alias_name.empty?
+        el_name=damballa("#{text}_#{type}")
+        act_name=damballa(text)
+      else
+        el_name="#{alias_name[0]}_#{type}".to_sym
+        act_name=alias_name[0]
+      end
       element(el_name) { |b| b.send(type, hash[type]=>text) }
       action(act_name) { |b| b.send(type, hash[type]=>text).click }
-      alias_name.each do |name|
-        alias_method "#{name}_#{type}".to_sym, el_name
-        alias_method name, act_name
-      end
     end
 
   end
