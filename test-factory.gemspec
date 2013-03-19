@@ -1,6 +1,6 @@
 spec = Gem::Specification.new do |s|
   s.name = 'test-factory'
-  s.version = '0.2.0'
+  s.version = '0.2.3'
   s.summary = %q{rSmart's framework for creating automated testing scripts}
   s.description = %q{This gem provides a set of modules and methods to help quickly and DRYly create a test automation framework using Ruby and Watir (or watir-webdriver).}
   s.files = Dir.glob("**/**/**")

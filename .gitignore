@@ -7,3 +7,4 @@ directory.yml
 *.gem
 *.log
 *test_spec.rb
+projectFilesBackup
