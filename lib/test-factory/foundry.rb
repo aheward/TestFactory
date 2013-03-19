@@ -6,6 +6,7 @@ module Foundry
   # code that you specify.
   # @param page_class [Class] the name of the page class that you want to instantiate
   # @param &block [C] this is the block of code that you want to run while on the given page
+  #
   def visit page_class, &block
     on page_class, true, &block
   end
@@ -15,6 +16,7 @@ module Foundry
   # @param page_class [Class] the name of the page class that you want to instantiate
   # @param visit [TrueClass, FalseClass] Essentially you will never have to specify this explicitly
   # @param &block [C] this is the block of code that you want to run while on the given page
+  #
   def on page_class, visit=false, &block
     @current_page = page_class.new @browser, visit
     block.call @current_page if block
@@ -26,6 +28,7 @@ module Foundry
   #
   # @param data_object_class [Class] The name of the class you want to use to build a data object for testing
   # @param opts [Hash] The list of attributes you want to give to your data object
+  #
   def make data_object_class, opts={}
     data_object_class.new @browser, opts
   end
@@ -35,6 +38,7 @@ module Foundry
   # combining the make with the create. Of course, this
   # requires that your data object classes properly follow the design
   # pattern and have a #create method available.
+  #
   def create data_object_class, opts={}
     data_object = make data_object_class, opts
     data_object.create
@@ -50,6 +54,7 @@ module Foundry
   #
   # @example
   #   page.wait_until { |b| b.processing_message=="Done" }
+  #
   def wait_until(timeout=30, message=nil, &block)
     Object::Watir::Wait.until(timeout, message, &block)
   end

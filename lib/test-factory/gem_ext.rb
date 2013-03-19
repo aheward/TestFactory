@@ -62,7 +62,10 @@
 #     # ...
 #   end
 #
-# Now, let's take that same code, but this time use the +#fit+ method, assume that
+# That's just nasty! Your Page Class has two element definitions that are nearly identical.
+# And the nested conditional in the Data Object's #edit method hurts the eyes!
+#
+# Now, let's take that same code, but this time use the +#fit+ method. We'll assume that
 # the data object's +@option+ instance variable will be +:set+, +:clear+, or +nil+, and
 # end the +#edit+ with the DataFactory's +#set_options+ helper method...
 #
@@ -87,6 +90,8 @@
 #     # ...
 #   end
 #
+# Much cleaner!
+#
 # If you absolutely _must_ have your data object's instance variable be something
 # other than +:set+ or +:clear+, then consider writing a private transform method
 # in your data object class, like this:
@@ -106,6 +111,7 @@ module Watir
     # Use when the argument you are passing to a text field
     # may be nil, in which case you don't
     # want to do anything with the page element.
+    #
     def fit(args)
       unless args==nil
         assert_exists
@@ -118,13 +124,52 @@ module Watir
   end
 
   class Select
+
     # Extends Watir's methods.
     # Use when the argument you are passing to a text field
     # may be nil, in which case you don't
     # want to do anything with the page element.
+    # @example
+    #   page.select_list.fit @my_selection
+    #
     def fit(str_or_rx)
       select_by :text, str_or_rx unless str_or_rx==nil
     end
+
+    # Allows you to select a specific item in a
+    # select list, or, if desired, it will pick an item from
+    # the list at random.
+    #
+    # If you pass this method the string '::random::' then
+    # it will select an item at random from the select
+    # list and, assuming what you passed it was a class instance
+    # variable, it will be updated to contain the
+    # selected value (hence the ! in the method name).
+    #
+    # @example
+    #   @my_selection='::random::'
+    #   page.select_list.pick! @my_selection
+    #   puts @my_selection # => <Value of randomly selected item from list>
+    #
+    def pick!(item)
+      if item=='::random::'
+        item.replace(select_at_random)
+      else
+        fit item
+      end
+    end
+
+    private
+
+    def select_at_random
+      text_array = []
+      options.each { |opt| text_array << opt.text }
+      text_array.delete_if { |text| text=='select' || text=='' }
+      item = text_array.sample
+      select item
+      item
+    end
+
   end
 
 end
