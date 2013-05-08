@@ -79,6 +79,7 @@ class PageFactory
     #   action(:select_style) { |stylename, b| b.div(:text=>/#{Regexp.escape(stylename)}/).link(:text=>"Select").click } => #select_style(stylename)
     #
     def action method_name, &block
+      raise "#{method_name} is being defined twice in #{self}!" if self.instance_methods.include?(method_name.to_sym)
       define_method method_name.to_s do |*thing|
         Proc.new(&block).call *thing, self
       end
