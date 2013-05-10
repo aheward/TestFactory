@@ -105,6 +105,15 @@
 #   page.checkbox.fit checkbox_trans[opts[:option]]
 #
 module Watir
+
+  class CheckBox
+    def fit(arg)
+      unless arg==nil
+        self.send(arg)
+      end
+    end
+  end
+
   module UserEditable
 
     # Extends Watir's methods.
