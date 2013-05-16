@@ -35,6 +35,13 @@ Using the TestFactory properly involves three distinct steps:
    level requires only basic skills with Ruby and Watir, but a strong command of your DSL
    (the thing you're building with TestFactory).
 
+These three steps can all be accomplished by a single person. However, ideally, they should be done by three or four people, as the design philosophy of TestFactory allows for specialization:
+
+ - A Watir specialist works on defining page elements and actions inside of page classes
+ - A Ruby specialist uses the output of the Watir specialist to build the data objects and their helper methods, creating the DSL for the project
+ - A non-programmer--say, a business analyst or a manual tester with domain expertise--writes test scenarios, in English
+ - A more junior automation engineer translates the English into Ruby code, via the DSL created by the Ruby specialist (if you're using Cucumber, these would be your step definitions)
+
 How to Start
 ------------
 
@@ -120,7 +127,7 @@ class YourDataObject
     # Hash into YourDataObject's class instance variables
     set_options(defaults.merge(opts))
 
-    requires @id # This line allows you to specify any class instance variables that must
+    requires :id # This line allows you to specify any class instance variables that must
                  # be explicitly defined for the data object
   end
 
@@ -227,12 +234,12 @@ end
 ```
 
 *  The setting of random values for select lists in a data object is determined by passing
-   the symbol `:random` in the instance variable, or as the value in the key/value pair
+   the string '::random::' in the instance variable, or as the value in the key/value pair
    passed in an `#edit` method's `opts` parameter. The `#create` and `#edit` methods will
    handle the necessary logic. The purpose is to prevent the need for custom randomizing
    CRUD methods in the data object.
 *  See the gem_ext.rb file's discussion of the Watir `#fit` method for additional
-   design pattern rules to follow.
+   design pattern rules to follow (If you're reading this on rubydoc.info then click the Watir module link)
 *  Please make an effort to follow the [Ruby Style Guidelines](http://www.caliban.org/ruby/rubyguide.shtml#style).
 
 Notice
