@@ -79,6 +79,7 @@ class PageFactory
     #   action(:select_style) { |stylename, b| b.div(:text=>/#{Regexp.escape(stylename)}/).link(:text=>"Select").click } => #select_style(stylename)
     #
     def action method_name, &block
+      raise "#{method_name} is being defined twice in #{self}!" if self.instance_methods.include?(method_name.to_sym)
       define_method method_name.to_s do |*thing|
         Proc.new(&block).call *thing, self
       end
@@ -98,7 +99,9 @@ class PageFactory
     #
     # The last parameter in the method is optional. Use it when
     # you need the method name to be different from the text of
-    # the link--for example if the link text changes and you don't
+    # the link--for example if the link text is something unhelpful,
+    # like "here", or else the link text gets updated (e.g., what was
+    # "Log In" is now "Sign In", instead) and you don't
     # want to have to go through all your data objects and step
     # definitions to update them to the new method name.
     #
@@ -124,7 +127,8 @@ class PageFactory
     #
     # The last parameter in the method is optional. Use it when
     # you need the method name to be different from the text of
-    # the button--for example if the button text changes and you don't
+    # the button--for example if the button text is unhelpful, like "Go", or else
+    # it changes (e.g., from "Update" to "Edit") and you don't
     # want to have to go through all your data objects and step
     # definitions to update them to the new method name.
     #

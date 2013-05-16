@@ -92,3 +92,18 @@ module Enumerable
   end
 
 end # Enumerable
+
+
+class Numeric
+
+  # Converts a number object to a string containing commas every 3rd digit. Adds
+  # trailing zeroes if necessary to match round currency amounts.
+  def commas
+    self.to_s =~ /([^\.]*)(\..*)?/
+    int, dec = $1.reverse, $2 ? ('%.2f' % $2).to_s[/.\d+$/] : ".00"
+    while int.gsub!(/(,|\.|^)(\d{3})(\d)/, '\1\2,\3')
+    end
+    int.reverse + dec
+  end
+
+end # Numeric

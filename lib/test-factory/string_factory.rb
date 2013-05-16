@@ -9,9 +9,7 @@ module StringFactory
   # @param s [String] Typically this will be left blank, but if included, any string created will be prepended with s. Note that the string length will still be as specified
   #
   def random_string(length=10, s="")
-    length.enum_for(:times).inject(s) do |result, index|
-      s << rand(93) + 33
-    end
+    length.enum_for(:times).inject(s) { s << rand(93) + 33 }
   end
 
   # A random string creator that draws from all printable ASCII and High ASCII characters
@@ -20,9 +18,7 @@ module StringFactory
   # @param s [String] Typically this will be left blank, but if included, any string created will be prepended with s. Note that the string length will still be as specified
   #
   def random_high_ascii(length=10, s="")
-    length.enum_for(:times).inject(s) do |result, index|
-      s << rand(223) + 33
-    end
+    length.enum_for(:times).inject(s) { s << rand(223) + 33 }
   end
 
   # A "friendlier" random string generator. No characters need to be escaped for valid URLs.
