@@ -108,9 +108,7 @@ module Watir
 
   class CheckBox
     def fit(arg)
-      unless arg==nil
-        self.send(arg)
-      end
+      self.send(arg) unless arg==nil
     end
   end
 
