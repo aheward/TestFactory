@@ -105,5 +105,7 @@ class Numeric
     end
     int.reverse + dec
   end
+  alias_method :add_commas, :commas
+  alias_method :to_string_with_commas, :commas
 
 end # Numeric
