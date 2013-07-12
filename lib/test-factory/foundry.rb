@@ -45,18 +45,4 @@ module Foundry
     data_object
   end
 
-  # A helper method that takes a block of code and waits until it resolves to true.
-  # Useful when you need to wait for something to be on a page that's a little more
-  # involved than a simple element (for those, you should use the #expected_element
-  # method found in the PageFactory class)
-  # @param timeout [Fixnum] Defaults to 30 seconds
-  # @param message [String] The text thrown if the timeout is reached
-  #
-  # @example
-  #   page.wait_until { |b| b.processing_message=="Done" }
-  #
-  def wait_until(timeout=30, message=nil, &block)
-    Object::Watir::Wait.until(timeout, message, &block)
-  end
-
 end
