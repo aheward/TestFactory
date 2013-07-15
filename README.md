@@ -183,7 +183,7 @@ follow them probably [smells](http://en.wikipedia.org/wiki/Code_smell), and shou
    the getting or setting of values, or the clicking of links or buttons. Any more
    complicated page interactions are handled in the Data Object classes, or in the test
    step definitions.
-*  Data Objects represent definable data structure entities in the system being tested.
+*  Data Objects represent definable data structure entities--known formally as "[closures](http://www.skorks.com/2010/05/closures-a-simple-explanation-using-ruby/)"--in the system being tested.
    As data, they fit into the [CRUD Model](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
    and thus have methods that correspond to those basic functions.
 *  Data Objects have a single method for each of the CRUD functions, and additional
