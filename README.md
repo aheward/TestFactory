@@ -241,12 +241,3 @@ end
 *  See the gem_ext.rb file's discussion of the Watir `#fit` method for additional
    design pattern rules to follow (If you're reading this on rubydoc.info then click the Watir module link)
 *  Please make an effort to follow the [Ruby Style Guidelines](http://www.caliban.org/ruby/rubyguide.shtml#style).
-
-Notice
-------
-
-Copyright 2013 rSmart, Inc., Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
-[http://www.osedu.org/licenses/ECL-2.0](http://www.osedu.org/licenses/ECL-2.0)
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
