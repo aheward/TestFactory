@@ -13,23 +13,30 @@
 # limitations under the License.
 #
 # =================
-# CollectionFactory
+# CollectionsFactory
 # =================
 #
 # Use this as the superclass for your data object collection classes.
 class CollectionsFactory < Array
 
-  # Creates a method called "add" that will create the specified data
-  # object and then add it as an item in the collection.
-  #
-  # Note that it's assumed that the target data object will have a
-  # create method defined. If not, this will not work properly.
-  def self.method_to_add klass
-    define_method 'add' do |browser, opts|
-      element = klass.new browser, opts
+  def initialize(browser)
+    @browser=browser
+  end
+
+  # Defines the class of objects contained in the collection
+  def self.contains klass
+
+    # Creates a method called "add" that will create the specified data
+    # object and then add it as an item in the collection.
+    #
+    # Note that it's assumed that the target data object will have a
+    # create method defined. If not, this will not work properly.
+    define_method 'add' do |opts|
+      element = klass.new @browser, opts
       element.create
       self << element
     end
+
   end
 
 end
