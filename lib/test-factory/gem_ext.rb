@@ -183,9 +183,8 @@ module Watir
     private
 
     def select_at_random
-      text_array = []
-      options.each { |opt| text_array << opt.text }
-      text_array.delete_if { |text| text=='select' || text=='' }
+      text_array = options.map { |opt| opt.text }
+      text_array.delete_if { |text| text=~/^select(.?)$/i || text=='' }
       item = text_array.sample
       select item
       item

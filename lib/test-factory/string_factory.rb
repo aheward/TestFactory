@@ -85,6 +85,16 @@ module StringFactory
     s.to_s
   end
 
+  # Returns a String containing a number with two decimal places, for creation
+  # of dollar values.
+  # @param max [Integer] The highest allowable dollar amount
+  # @example
+  #   random_dollar_value(100) => '44.89'
+  #
+  def random_dollar_value(max)
+    "#{rand(max)}.#{rand(99)}"
+  end
+
   # Returns a block of text (of the specified type, see below) containing
   # the specified number of "words" (each containing between 1 and 16 chars)
   # randomly spread across the specified number of lines (note that
