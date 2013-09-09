@@ -166,6 +166,7 @@ module Watir
     # list and, assuming what you passed it was a class instance
     # variable, it will be updated to contain the
     # selected value (hence the ! in the method name).
+    # Note that this method will be slow with large selection lists.
     #
     # @example
     #   @my_selection='::random::'
@@ -183,11 +184,13 @@ module Watir
     private
 
     def select_at_random
-      text_array = options.map { |opt| opt.text }
-      text_array.delete_if { |text| text=~/^select(.?)$/i || text=='' }
-      item = text_array.sample
-      select item
-      item
+      ar = options.map(&:text)
+      sel = ar.sample
+      while sel=~/^select(.?)$/i || sel==''
+        sel = ar.sample
+      end
+      select sel
+      sel
     end
 
   end
