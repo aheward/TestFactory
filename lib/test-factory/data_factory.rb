@@ -26,6 +26,20 @@ module DataFactory
   end
   alias update_options set_options
 
+  # Use for setting a data object's class instance variable as a nested collection class.
+  #
+  # This method assumes your collection class name ends with "Collection". Therefore,
+  # the string you pass in its parameter is the first part of the class name.
+  #
+  # E.g., your collection class is called "DataObjectCollection", so, inside your
+  # parent object's defaults, you'd set the instance variable like this:
+  #
+  # data_objects: collection('DataObject')
+  #
+  def collection(name)
+    Kernel.const_get("#{name}Collection").new(@browser)
+  end
+
   # Items passed to this method are checked to ensure that the associated class instance variable
   # is not nil. If it is, the script is aborted and an error is thrown. Use symbols separated
   # by commas with this method. The symbol(s) should exactly match the name of the instance
