@@ -40,3 +40,7 @@ class CollectionsFactory < Array
   end
 
 end
+
+class CollectionFactory < CollectionsFactory
+  # Just an alias class name.
+end
