@@ -154,7 +154,7 @@ module StringFactory
   #   damballa("A String of Fun Stuff (for you)") => :a_string_of_fun_stuff_for_you
   #
   def self.damballa(text)
-    text.gsub(/([+=|\\\.~@#'"\?`!\{\}\[\]\$%\^&\*\(\)])/, "").
+    text.gsub(/([+=|\\\.,~@#'"\?`!\{\}\[\]\$%\^&\*\(\)])/, "").
         gsub(/([-\/\ ])/,"_").
         downcase.
         to_sym
