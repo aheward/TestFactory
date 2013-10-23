@@ -126,6 +126,12 @@ module Watir
     end
   end
 
+  class Radio
+    def fit(arg)
+      self.set if arg==:set
+    end
+  end
+
   module UserEditable
 
     # Extends Watir's methods.

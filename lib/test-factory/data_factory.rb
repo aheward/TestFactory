@@ -82,6 +82,47 @@ module DataFactory
   end
   alias radio_setting checkbox_setting
 
+  # A shortcut method for filling out fields on a page.
+  #
+  # This method has a number of requirements:
+  # 1) The field name and the instance variable name in your data object
+  #    must be identical. For this reason, this method can only
+  #    be used in your data objects' create methods.
+  # 2) Since the listed fields get filled out in random order, be sure that
+  #    this is okay in the context of your page--in other words, if field A
+  #    needs to be specified before field B then having them both in your
+  #    fill_out step would be inappropriate.
+  # 3) This method supports text fields, select lists, check boxes, and
+  #    radio buttons, but only if their element definitions don't take a
+  #    parameter. Please use the #fill_out_item with elements that do need
+  #    a parameter defined.
+  #
+  def fill_out(page, *fields)
+    methods={
+        'Watir::TextField' => lambda{|p, f| p.send(f).fit(instance_variable_get f) },
+        'Watir::Select'    => lambda{|p, f| p.send(f).pick!(instance_variable_get f) },
+        'Watir::Radio'     => lambda{|p, f| p.send(f).fit(instance_variable_get f) },
+        'Watir::CheckBox'  => lambda{|p, f| p.send(f).fit(instance_variable_get f) }
+    }
+    fields.shuffle.each do |field|
+      methods[page.send(field).class.to_s].call(page, field)
+    end
+  end
+
+  # Same as #fill_out, but used with methods that take a
+  # parameter to identify the target element...
+  def fill_out_item(name, page, *fields)
+    methods={
+        'Watir::TextField' => lambda{|n, p, f| p.send(f, n).fit(instance_variable_get f) },
+        'Watir::Select'    => lambda{|n, p, f| p.send(f, n).pick!(instance_variable_get f) },
+        'Watir::Radio'     => lambda{|n, p, f| p.send(f, n).fit(instance_variable_get f) },
+        'Watir::CheckBox'  => lambda{|n, p, f| p.send(f, n).fit(instance_variable_get f) }
+    }
+    fields.shuffle.each do |field|
+      methods[page.send(field, name).class.to_s].call(name, page, field)
+    end
+  end
+
   # This is a specialized method for use with any select list boxes
   # that exist in the site you're testing and will contain
   # unpredictable default values.
