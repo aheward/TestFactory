@@ -104,7 +104,7 @@ module DataFactory
   #
   # 4) This method supports text fields, select lists, check boxes, and
   # radio buttons, but only if their element definitions don't take a
-  # parameter. Please use the #fill_out_item with elements that do need
+  # parameter. Please use the +#fill_out_item+ with elements that do need
   # a parameter defined.
   #
   # @example
@@ -150,16 +150,16 @@ module DataFactory
   # 1) Retrieve and store the select list's value
   # 2) Specify a custom value to select
   #
-  # Enter: #get_or_select!
+  # Enter: +#get_or_select!+
   #
   # Assuming you just want to store the default value, then your
   # Data Object's instance variable for the field will--initially--be
-  # nil. In that case, #get_or_select! will grab the select list's
+  # nil. In that case, +#get_or_select!+ will grab the select list's
   # current value and store it in your instance variable.
   #
   # On the other hand, if you want to update that field with your
   # custom value, then your instance variable will not be nil, so
-  # #get_or_select! will take that value and use it to update the
+  # +#get_or_select!+ will take that value and use it to update the
   # select list.
   #
   # Note that this method *only* works with select lists that take
