@@ -82,44 +82,55 @@ module DataFactory
   end
   alias radio_setting checkbox_setting
 
-  # A shortcut method for filling out fields on a page.
+  # A shortcut method for filling out fields on a page. The
+  # method's first parameter is the page class that contains the fields
+  # you want to fill out. That is followed by the list of field name(s)
+  # (as Symbols).
   #
   # This method has a number of requirements:
   # 1) The field name and the instance variable name in your data object
   #    must be identical. For this reason, this method can only
   #    be used in your data objects' create methods.
-  # 2) Since the listed fields get filled out in random order, be sure that
+  # 2) Your checkbox data object variables
+  # 3) Since the listed fields get filled out in random order, be sure that
   #    this is okay in the context of your page--in other words, if field A
   #    needs to be specified before field B then having them both in your
   #    fill_out step would be inappropriate.
-  # 3) This method supports text fields, select lists, check boxes, and
+  # 4) This method supports text fields, select lists, check boxes, and
   #    radio buttons, but only if their element definitions don't take a
   #    parameter. Please use the #fill_out_item with elements that do need
   #    a parameter defined.
   #
+  # @example
+  #
+  #   on PageClass do |page|
+  #     fill_out page, :text_field_name, :radio_name, :select_list_name, :checkbox_name
+  #   end
+  #
   def fill_out(page, *fields)
-    methods={
-        'Watir::TextField' => lambda{|p, f| p.send(f).fit(instance_variable_get f) },
-        'Watir::Select'    => lambda{|p, f| p.send(f).pick!(instance_variable_get f) },
-        'Watir::Radio'     => lambda{|p, f| p.send(f).fit(instance_variable_get f) },
-        'Watir::CheckBox'  => lambda{|p, f| p.send(f).fit(instance_variable_get f) }
-    }
+    watir_methods=[ lambda{|p, f| p.send(f).fit(instance_variable_get f) },
+                    lambda{|p, f| p.send(f).pick!(instance_variable_get f) } ]
     fields.shuffle.each do |field|
-      methods[page.send(field).class.to_s].call(page, field)
+      x = page.send(field).class.to_s=='Watir::Select' ? 1 : 0
+      watir_methods[x].call(page, field)
     end
   end
 
   # Same as #fill_out, but used with methods that take a
   # parameter to identify the target element...
+  #
+  # @example
+  #
+  #   on PageClass do |page|
+  #     fill_out_item 'Joe Schmoe', page, :text_field_name, :radio_name, :select_list_name, :checkbox_name
+  #   end
+  #
   def fill_out_item(name, page, *fields)
-    methods={
-        'Watir::TextField' => lambda{|n, p, f| p.send(f, n).fit(instance_variable_get f) },
-        'Watir::Select'    => lambda{|n, p, f| p.send(f, n).pick!(instance_variable_get f) },
-        'Watir::Radio'     => lambda{|n, p, f| p.send(f, n).fit(instance_variable_get f) },
-        'Watir::CheckBox'  => lambda{|n, p, f| p.send(f, n).fit(instance_variable_get f) }
-    }
+    watir_methods=[ lambda{|n, p, f| p.send(f, n).fit(instance_variable_get f) },
+                    lambda{|n, p, f| p.send(f, n).pick!(instance_variable_get f) } ]
     fields.shuffle.each do |field|
-      methods[page.send(field, name).class.to_s].call(name, page, field)
+      x = page.send(field, name).class.to_s=='Watir::Select' ? 1 : 0
+      watir_methods[x].call(name, page, field)
     end
   end
 
