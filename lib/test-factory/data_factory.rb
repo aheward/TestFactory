@@ -34,7 +34,8 @@ module DataFactory
   # E.g., your collection class is called "DataObjectCollection", so, inside your
   # parent object's defaults, you'd set the instance variable like this:
   #
-  # data_objects: collection('DataObject')
+  # @example
+  #   data_objects: collection('DataObject')
   #
   def collection(name)
     Kernel.const_get("#{name}Collection").new(@browser)
@@ -52,7 +53,6 @@ module DataFactory
   # @param elements [Array] the list of items that are required.
   #
   # @example
-  #
   #   requires :site, :assignment, :document_id
   #
   def requires(*elements)
@@ -72,7 +72,7 @@ module DataFactory
 
   # Transform for use with data object instance variables
   # that refer to checkboxes or radio buttons. Instead of returning a boolean value, it returns
-  # the symbols :set or :clear -- This can be useful because those symbols can then in turn
+  # the symbols +:set+ or +:clear+ -- This can be useful because those symbols can then in turn
   # be passed directly as methods for updating or validating the checkbox later.
   #
   # @param checkbox [Watir::CheckBox] The checkbox on the page that you want to inspect
@@ -88,23 +88,26 @@ module DataFactory
   # (as Symbols).
   #
   # This method has a number of requirements:
+  #
   # 1) The field name and the instance variable name in your data object
-  #    must be identical. For this reason, this method can only
-  #    be used in your data objects' create methods.
+  # must be identical. For this reason, this method can only
+  # be used in your data objects' create methods.
+  #
   # 2) Your checkbox and radio button data object instance variables are
-  #    either nil, :set, or :clear. Any other values will not be handled
-  #    correctly.
+  # either +nil+, +:set+, or +:clear+. Any other values will not be handled
+  # correctly.
+  #
   # 3) Since the listed fields get filled out in random order, be sure that
-  #    this is okay in the context of your page--in other words, if field A
-  #    needs to be specified before field B then having them both in your
-  #    fill_out step would be inappropriate.
+  # this is okay in the context of your page--in other words, if field A
+  # needs to be specified before field B then having them both in your
+  # fill_out step would be inappropriate.
+  #
   # 4) This method supports text fields, select lists, check boxes, and
-  #    radio buttons, but only if their element definitions don't take a
-  #    parameter. Please use the #fill_out_item with elements that do need
-  #    a parameter defined.
+  # radio buttons, but only if their element definitions don't take a
+  # parameter. Please use the #fill_out_item with elements that do need
+  # a parameter defined.
   #
   # @example
-  #
   #   on PageClass do |page|
   #     fill_out page, :text_field_name, :radio_name, :select_list_name, :checkbox_name
   #   end
@@ -122,7 +125,6 @@ module DataFactory
   # parameter to identify the target element...
   #
   # @example
-  #
   #   on PageClass do |page|
   #     fill_out_item 'Joe Schmoe', page, :text_field_name, :radio_name, :select_list_name, :checkbox_name
   #   end
@@ -172,7 +174,6 @@ module DataFactory
   # @param select_list [Watir::Select] The relevant select list element on the page
   #
   # @example
-  #
   #   get_or_select! :@num_resubmissions, page.num_resubmissions
   #
   def get_or_select!(inst_var_sym, select_list)
@@ -197,7 +198,6 @@ module DataFactory
   # of the instance variable.
   #
   # @example
-  #
   #   @open[:day] = get_or_select(@open[:day], page.open_day)
   #
   def get_or_select(hash_inst_var, select_list)
