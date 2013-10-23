@@ -91,7 +91,9 @@ module DataFactory
   # 1) The field name and the instance variable name in your data object
   #    must be identical. For this reason, this method can only
   #    be used in your data objects' create methods.
-  # 2) Your checkbox data object variables
+  # 2) Your checkbox and radio button data object instance variables are
+  #    either nil, :set, or :clear. Any other values will not be handled
+  #    correctly.
   # 3) Since the listed fields get filled out in random order, be sure that
   #    this is okay in the context of your page--in other words, if field A
   #    needs to be specified before field B then having them both in your
