@@ -113,12 +113,7 @@ module DataFactory
   #   end
   #
   def fill_out(page, *fields)
-    watir_methods=[ lambda{|p, f| p.send(f).fit(instance_variable_get "@#{f}") },
-                    lambda{|p, f| p.send(f).pick!(instance_variable_get "@#{f}") } ]
-    fields.shuffle.each do |field|
-      x = page.send(field).class.to_s=='Watir::Select' ? 1 : 0
-      watir_methods[x].call(page, field)
-    end
+    fill_out_item(nil, page, *fields)
   end
 
   # Same as #fill_out, but used with methods that take a
@@ -130,11 +125,10 @@ module DataFactory
   #   end
   #
   def fill_out_item(name, page, *fields)
-    watir_methods=[ lambda{|n, p, f| p.send(f, n).fit(instance_variable_get "@#{f}") },
-                    lambda{|n, p, f| p.send(f, n).pick!(instance_variable_get "@#{f}") } ]
     fields.shuffle.each do |field|
-      x = page.send(field, name).class.to_s=='Watir::Select' ? 1 : 0
-      watir_methods[x].call(name, page, field)
+      lmnt = page.send(*[field, name].compact)
+      var = instance_variable_get "@#{field}"
+      lmnt.class.to_s == 'Watir::Select' ?  lmnt.pick!(var) :  lmnt.fit(var)
     end
   end
 
