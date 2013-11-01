@@ -24,6 +24,7 @@ class CollectionsFactory < Array
   end
 
   # Defines the class of objects contained in the collection
+  #
   def self.contains klass
 
     # Creates a method called "add" that will create the specified data
@@ -37,6 +38,17 @@ class CollectionsFactory < Array
       self << element
     end
 
+  end
+
+  # Makes a "deep copy" of the Collection. See the #data_object_copy
+  # method description in the DataObject class for more information.
+  #
+  def copy
+    new_collection = self.class.new(@browser)
+    self.each do |item|
+      new_collection << item.data_object_copy
+    end
+    new_collection
   end
 
 end

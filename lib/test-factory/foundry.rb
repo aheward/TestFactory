@@ -32,9 +32,9 @@ module Foundry
   # @param &block [C] this is the block of code that you want to run while on the given page
   #
   def on page_class, visit=false, &block
-    @current_page = page_class.new @browser, visit
-    block.call @current_page if block
-    @current_page
+    current_page = page_class.new @browser, visit
+    block.call current_page if block
+    current_page
   end
   alias_method :on_page, :on
 

@@ -13,4 +13,5 @@
 # limitations under the License.
 
 require 'watir-webdriver'
+require "#{File.dirname(__FILE__)}/test-factory/foundry.rb"
 Dir["#{File.dirname(__FILE__)}/test-factory/*.rb"].each {|f| require f }
