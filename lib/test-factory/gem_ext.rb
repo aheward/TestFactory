@@ -187,6 +187,17 @@ module Watir
       end
     end
 
+    # Same as #pick!, except it does not change the
+    # value of 'item'
+    #
+    def pick(item)
+      if item=='::random::'
+        select_at_random
+      else
+        fit item
+      end
+    end
+
     private
 
     def select_at_random
