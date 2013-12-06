@@ -100,7 +100,8 @@ module DataFactory
   # 3) Since the listed fields get filled out in random order, be sure that
   # this is okay in the context of your page--in other words, if field A
   # needs to be specified before field B then having them both in your
-  # fill_out step would be inappropriate.
+  # fill_out step would be inappropriate. If you need a specific order,
+  # use #ordered_fill instead.
   #
   # 4) This method supports text fields, select lists, check boxes, and
   # radio buttons, but only if their element definitions don't take a
@@ -113,7 +114,19 @@ module DataFactory
   #   end
   #
   def fill_out(page, *fields)
-    fill_out_item(nil, page, *fields)
+    f_o_i true, nil, page, *fields
+  end
+
+  # Use when you need to specify the order that the fields should be
+  # updated.
+  #
+  # @example
+  #   on PageClass do |page|
+  #     ordered_fill page, :text_field_name, :radio_name, :select_list_name, :checkbox_name
+  #   end
+  #
+  def ordered_fill(page, *fields)
+    f_o_i false, nil, page, *fields
   end
 
   # Same as #fill_out, but used with methods that take a
@@ -125,11 +138,20 @@ module DataFactory
   #   end
   #
   def fill_out_item(name, page, *fields)
-    fields.shuffle.each do |field|
-      lmnt = page.send(*[field, name].compact)
-      var = instance_variable_get "@#{field}"
-      lmnt.class.to_s == 'Watir::Select' ?  lmnt.pick!(var) :  lmnt.fit(var)
-    end
+    f_o_i true, name, page, *fields
+  end
+
+  # Use instead of #fill_out_item when you need to
+  # specify the order that the fields should be
+  # updated.
+  #
+  # @example
+  #   on PageClass do |page|
+  #     ordered_item_fill 'Joe Schmoe', page, :text_field_name, :radio_name, :select_list_name, :checkbox_name
+  #   end
+  #
+  def ordered_item_fill(name, page, *fields)
+    f_o_i false, name, page, *fields
   end
 
   # This is a specialized method for use with any select list boxes
@@ -200,6 +222,21 @@ module DataFactory
     else
       select_list.select hash_inst_var
       hash_inst_var
+    end
+  end
+
+  # =======
+  private
+  # =======
+
+  # Do not use this method directly.
+  #
+  def f_o_i(shuffle, name, page, *fields)
+    shuffle ? fields.shuffle! : fields
+    fields.each do |field|
+      lmnt = page.send(*[field, name].compact)
+      var = instance_variable_get "@#{field}"
+      lmnt.class.to_s == 'Watir::Select' ? lmnt.pick!(var) : lmnt.fit(var)
     end
   end
 

@@ -53,6 +53,5 @@ class CollectionsFactory < Array
 
 end
 
-class CollectionFactory < CollectionsFactory
-  # Just an alias class name.
-end
+# Just an alias class name.
+class CollectionFactory < CollectionsFactory; end

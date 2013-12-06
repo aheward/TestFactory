@@ -69,35 +69,29 @@ class PageFactory
       end
     end
 
-    # The basic building block of the page object classes.
-    # Use in conjunction with Watir to define all elements on a given page that are important to validate.
-    # @param element_name [Symbol] The name you're giving to the element on the page.
+    # The basic building block for defining and interacting with
+    # elements on a web page. # Use in conjunction with
+    # Watir to define all elements on a given page that are important to validate.
+    #
+    # Methods that take one or more parameters can be built with this as well.
     #
     # @example
     #   element(:title) { |b| b.text_field(:id=>"title-id") }
     #   value(:page_header) { |b| b.h3(:class=>"page_header").text }
-    #
-    def element element_name
-      raise "#{element_name} is being defined twice in #{self}!" if self.instance_methods.include?(element_name.to_sym)
-      define_method element_name.to_s do
-        yield self
-      end
-    end
-    alias :value :element
-
-    # The basic building block for interacting with elements on a page, such as links and buttons.
-    # Methods that take one or more parameters can be built with this as well.
-    #
-    # @example
     #   action(:continue) { |b| b.frm.button(:value=>"Continue").click } => Creates a #continue method that clicks the Continue button
-    #   action(:select_style) { |stylename, b| b.div(:text=>/#{Regexp.escape(stylename)}/).link(:text=>"Select").click } => #select_style(stylename)
+    #   p_element(:select_style) { |stylename, b| b.div(:text=>/#{Regexp.escape(stylename)}/).link(:text=>"Select").click } => #select_style(stylename)
     #
-    def action method_name, &block
-      raise "#{method_name} is being defined twice in #{self}!" if self.instance_methods.include?(method_name.to_sym)
-      define_method method_name.to_s do |*thing|
+    def element name, &block
+      raise "#{name} is being defined twice in #{self}!" if self.instance_methods.include?(name.to_sym)
+      define_method name.to_s do |*thing|
         Proc.new(&block).call *thing, self
       end
     end
+    alias_method :action, :element
+    alias_method :value, :element
+    alias_method :p_element, :element
+    alias_method :p_action, :element
+    alias_method :p_value, :element
 
     # Use this for links that are safe to define by their text string.
     # This method will return two methods for interacting with the link:
