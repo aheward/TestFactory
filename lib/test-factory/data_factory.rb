@@ -266,7 +266,7 @@ module DataFactory
 
   # Do not use this method directly.
   #
-  def parse_fields(opts, name, page, fields)
+  def parse_fields(opts, name, page, *fields)
     fields.each do |field|
       lmnt = page.send(*[field, name].compact)
       var = opts.nil? ? instance_variable_get("@#{field}") : opts[field]
