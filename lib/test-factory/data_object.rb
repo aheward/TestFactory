@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # The Superclass for all of your data objects.
-class DataObject
+class DataObjectFactory
 
   include Foundry
   include DataFactory
@@ -48,3 +48,6 @@ class DataObject
   end
 
 end
+
+# Empty alias class
+class DataObject < DataObjectFactory; end

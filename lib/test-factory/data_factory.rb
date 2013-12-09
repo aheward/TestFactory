@@ -154,6 +154,34 @@ module DataFactory
     f_o_i false, name, page, *fields
   end
 
+  # Equivalent to #ordered_fill, except that it's used
+  # in the context of a Data Object's #edit method(s). As such, it
+  # requires the #edit method's hash to be passed as its own
+  # first parameter.
+  #
+  # @example
+  #   on PageClass do |page|
+  #     edit_fields opts, page, :text_field_name, :radio_name, :select_list_name, :checkbox_name
+  #   end
+  #
+  def edit_fields(opts, page, *fields)
+    edit_item_fields opts, nil, page, *fields
+  end
+
+  # Equivalent to #ordered_item_fill, except that it's used
+  # in the context of a Data Object's #edit method(s). As such, it
+  # requires the #edit method's hash to be passed as its own
+  # first parameter.
+  #
+  # @example
+  #   on PageClass do |page|
+  #     edit_item_fields opts, 'Joe Schmoe', page, :text_field_name, :radio_name, :select_list_name, :checkbox_name
+  #   end
+  #
+  def edit_item_fields(opts, name, page, *fields)
+    parse_fields(opts, name, page, *fields)
+  end
+
   # This is a specialized method for use with any select list boxes
   # that exist in the site you're testing and will contain
   # unpredictable default values.
@@ -233,9 +261,15 @@ module DataFactory
   #
   def f_o_i(shuffle, name, page, *fields)
     shuffle ? fields.shuffle! : fields
+    parse_fields(nil, name, page, *fields)
+  end
+
+  # Do not use this method directly.
+  #
+  def parse_fields(opts, name, page, fields)
     fields.each do |field|
       lmnt = page.send(*[field, name].compact)
-      var = instance_variable_get "@#{field}"
+      var = opts.nil? ? instance_variable_get("@#{field}") : opts[field]
       lmnt.class.to_s == 'Watir::Select' ? lmnt.pick!(var) : lmnt.fit(var)
     end
   end
