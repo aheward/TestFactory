@@ -152,7 +152,7 @@ class PageFactory
     # module for more info.
     #
     def damballa(text)
-      StringFactory::damballa(text)
+      StringFactory.damballa(text)
     end
 
     def elementize(type, text, *alias_name)

@@ -92,7 +92,7 @@ module StringFactory
   #   random_dollar_value(100) => '44.89'
   #
   def random_dollar_value(max)
-    "#{rand(max)}.#{rand(99)}"
+    "#{rand(max)}.#{'%02d'%rand(99)}"
   end
 
   # Returns a block of text (of the specified type, see below) containing
@@ -153,11 +153,12 @@ module StringFactory
   # @example
   #   damballa("A String of Fun Stuff (for you)") => :a_string_of_fun_stuff_for_you
   #
-  def self.damballa(text)
+  def damballa(text)
     text.gsub(/([+=|\\\.,~@#'"\?`!\{\}\[\]\$%\^&\*\(\)])/, "").
-        gsub(/([-\/\ ])/,"_").
+        gsub(/([-\/\s])/,"_").
         downcase.
         to_sym
   end
+  module_function :damballa
 
 end
