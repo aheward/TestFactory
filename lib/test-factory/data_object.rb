@@ -37,7 +37,11 @@ class DataObjectFactory
                     when orig_val.kind_of?(CollectionsFactory)
                       orig_val.copy
                     when orig_val.instance_of?(Array) || orig_val.instance_of?(Hash)
-                      Marshal::load(Marshal.dump(orig_val))
+                      begin
+                        Marshal::load(Marshal.dump(orig_val))
+                      rescue TypeError
+                        raise %{\nKey: #{key.inspect}\nValue: #{orig_val.inspect}\nClass: #{orig_val.class}\n\nThe copying of the Data Object has thrown a TypeError,\nwhich means the object detailed above is not "Marshallable".\nThe most likely cause is that you have put\na Data Object inside an\nArray or Hash.\nIf possible, put the Data Object into a Collection.\n\n}
+                      end
                     when orig_val.kind_of?(DataObject)
                       orig_val.data_object_copy
                     else

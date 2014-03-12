@@ -20,7 +20,8 @@ module StringFactory
   # A random string creator that draws from all printable ASCII characters
   # from 33 to 128. Default length is 10 characters.
   # @param length [Integer] The count of characters in the string
-  # @param s [String] Typically this will be left blank, but if included, any string created will be prepended with s. Note that the string length will still be as specified
+  # @param s [String] Typically this will be left blank, but if included, any string created will be prepended with s. Note that the string length will
+  # be longer by the size of the pre-pended string.
   #
   def random_string(length=10, s="")
     length.enum_for(:times).inject(s) { s << rand(93) + 33 }
@@ -29,7 +30,8 @@ module StringFactory
   # A random string creator that draws from all printable ASCII and High ASCII characters
   # from 33 to 256. Default length is 10 characters.
   # @param length [Integer] The count of characters in the string
-  # @param s [String] Typically this will be left blank, but if included, any string created will be prepended with s. Note that the string length will still be as specified
+  # @param s [String] Typically this will be left blank, but if included, any string created will be prepended with s. Note that the string length will be
+  # longer by the length of the pre-pended string.
   #
   def random_high_ascii(length=10, s="")
     length.enum_for(:times).inject(s) { s << rand(223) + 33 }
