@@ -343,3 +343,31 @@ class DataFactory
   end
 
 end
+
+# Will soon be removed...
+class DataObject < DataFactory
+
+  def set_options(hash)
+
+    warn %{
+         Welcome to version 0.4.6!
+
+         Please update all your Data Object classes to
+         inherit from DataFactory
+         instead of DataObject.
+
+         You still need to update this class: #{self.class}
+
+         Note that in the future this warning will be going
+         away. You'll just get an error, so
+         be sure you update your project soon!
+     }
+
+    @collections ||= []
+    hash.each do |key, value|
+      instance_variable_set("@#{key}", value)
+      @collections << key if value.kind_of?(CollectionsFactory)
+    end
+  end
+
+end
