@@ -60,7 +60,7 @@ class DataFactory
   # @param hash [Hash] Contains all options required for creating the needed Data Object
   #
   def set_options(hash)
-    @collections = []
+    @collections ||= []
     hash.each do |key, value|
       instance_variable_set("@#{key}", value)
       @collections << key if value.kind_of?(CollectionsFactory)
