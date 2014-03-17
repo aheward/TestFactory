@@ -1,4 +1,4 @@
-# Copyright 2012-2013 The rSmart Group, Inc.
+# Copyright 2012-2014 The rSmart Group, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,16 +12,58 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Provides a set of tools used to create your Data Object classes.
-module DataFactory
+# The Superclass for all of your data objects.
+class DataFactory
+
+  include Foundry
+
+  # Since Data Objects are not "Marshallable", and they generally
+  # contain lots of types of data in their instance variables,
+  # we have this method. This will create and return a 'deep copy' of
+  # the data object as well as any and all nested data objects
+  # and collections it contains.
+  #
+  # Please note that this method will fail if you are putting
+  # Data Objects into Arrays or Hashes instead
+  # of into Collection classes
+  #
+  def data_object_copy
+    opts = {}
+    self.instance_variables.each do |var|
+      key = var.to_s.gsub('@','').to_sym
+      orig_val = instance_variable_get var
+      opts[key] = case
+                    when orig_val.kind_of?(CollectionsFactory)
+                      orig_val.copy
+                    when orig_val.instance_of?(Array) || orig_val.instance_of?(Hash)
+                      begin
+                        Marshal::load(Marshal.dump(orig_val))
+                      rescue TypeError
+                        raise %{\nKey: #{key.inspect}\nValue: #{orig_val.inspect}\nClass: #{orig_val.class}\n\nThe copying of the Data Object has thrown a TypeError,\nwhich means the object detailed above is not "Marshallable".\nThe most likely cause is that you have put\na Data Object inside an\nArray or Hash.\nIf possible, put the Data Object into a Collection.\n\n}
+                      end
+                    when orig_val.kind_of?(DataFactory)
+                      orig_val.data_object_copy
+                    else
+                      orig_val
+                  end
+    end
+    self.class.new(@browser, opts)
+  end
 
   # Add this to the bottom of your Data Object's initialize method.
-  # Converts the contents of the hash into the class's instance variables.
+  # This method does 2 things:
+  # 1) Converts the contents of the hash into the class's instance variables.
+  # 2) Grabs the names of your collection class instance variables and stores
+  #    them in an Array. This is to allow for the data object class to send
+  #    any needed updates to its children. See #notify_coolections for more
+  #    details.
   # @param hash [Hash] Contains all options required for creating the needed Data Object
   #
   def set_options(hash)
+    @collections = []
     hash.each do |key, value|
       instance_variable_set("@#{key}", value)
+      @collections << key if value.kind_of?(CollectionsFactory)
     end
   end
   alias update_options set_options
@@ -253,6 +295,20 @@ module DataFactory
     end
   end
 
+  # Define this method in your data object when
+  # it has a parent, and that parent
+  # may periodically need to send
+  # it updated information about itself.
+  #
+  def update_from_parent(update)
+    raise %{
+    This method must be implemented in your data object
+    class if you plan to pass updates from a
+    parent object to the members of its
+    collections.
+           }
+  end
+
   # =======
   private
   # =======
@@ -273,5 +329,34 @@ module DataFactory
       lmnt.class.to_s == 'Watir::Select' ? lmnt.pick!(var) : lmnt.fit(var)
     end
   end
+
+  # Use this method in conjunction with your nested
+  # collection classes. The collections will notify
+  # their members about the passed parameters.
+  #
+  # Note: You must write a custom #update_from_parent
+  # method in your data object that will know what to
+  # do with the parameter(s) passed to it.
+  #
+  def notify_collections *updates
+    @collections.each {|coll| instance_variable_get("@#{coll}").notify_members *updates }
+  end
+
+end
+
+# An alias, for backwards compatibility...
+class DataObject < DataFactory
+
+  warn %{
+         Welcome to version 0.4.5!
+
+         Please update all your Data Object classes to
+         inherit from DataFactory
+         instead of DataObject.
+
+         Note that in the future this warning will be going
+         away. You'll just get an error, so
+         be sure you update your project soon!
+  }
 
 end

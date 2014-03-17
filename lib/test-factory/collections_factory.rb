@@ -1,4 +1,4 @@
-# Copyright 2012-2013 The rSmart Group, Inc.
+# Copyright 2012-2014 The rSmart Group, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -49,6 +49,16 @@ class CollectionsFactory < Array
       new_collection << item.data_object_copy
     end
     new_collection
+  end
+
+  # Used in conjunction with the Parent object containing
+  # the collection.
+  #
+  # The parent sends updated information to the collection(s)
+  # using #notify_collections
+  #
+  def notify_members *updates
+    self.each { |member| member.update_from_parent *updates }
   end
 
 end
