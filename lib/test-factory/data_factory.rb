@@ -343,20 +343,3 @@ class DataFactory
   end
 
 end
-
-# An alias, for backwards compatibility...
-class DataObject < DataFactory
-
-  warn %{
-         Welcome to version 0.4.5!
-
-         Please update all your Data Object classes to
-         inherit from DataFactory
-         instead of DataObject.
-
-         Note that in the future this warning will be going
-         away. You'll just get an error, so
-         be sure you update your project soon!
-  }
-
-end
