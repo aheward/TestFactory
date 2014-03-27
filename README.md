@@ -98,12 +98,10 @@ class Home < BasePage
 end
 ```
 
-Once you've got a bunch of classes set up for your site's various pages, you're going to want to create "data objects" to represent what goes into those pages. For this, you'll use the module DataFactory. Your data classes should follow this basic structure:
+Once you've got a bunch of classes set up for your site's various pages, you're going to want to create "data objects" to represent what goes into those pages. For this, you'll use the superclass DataFactory. Your data classes should follow this basic structure:
 
 ```ruby
-class YourDataObject
-
-  include DataFactory
+class YourDataObject < DataFactory
 
   # Define all the things you need to test about your data object.
   # These are some example attributes...
