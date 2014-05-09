@@ -59,8 +59,9 @@ module StringFactory
   # A random string generator that uses all characters
   # available on an American Qwerty keyboard.
   # @param length [Integer] The count of characters in the string
-  # @param s [String] Typically this will be left blank, but if included, any string created will be prepended with s. Note that the string length will still be as specified
-  #
+  # @param s [String] Typically this will be left blank, but if included, any string created will be prepended with s. Note that the string length will be longer by the length of the pre-pended string.
+  # @example
+  #   random_alphanums_plus(20, 'pre-') => 'pre-PUm,Rv:(LUFt4t@u29f%'
   def random_alphanums_plus(length=10, s="")
     chars = %w{ a b c d e f g h j k m n p q r s t u v w x y z A B C D E F G H J K L M N P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 ` ~ ! @  # $ % ^ & * ( ) _ + - = { } [ ] \\ : " ; ' < > ? , . / }
     length.times { s << chars[rand(chars.size)] }
@@ -69,7 +70,7 @@ module StringFactory
 
   # A random string generator that uses only letters and numbers in the string. Default length is 10 characters.
   # @param length [Integer] The count of characters in the string
-  # @param s [String] Typically this will be left blank, but if included, any string created will be prepended with s. Note that the string length will still be as specified
+  # @param s [String] Typically this will be left blank, but if included, any string created will be prepended with s. Note that the string length will be longer by the length of the pre-pended string.
   #
   def random_alphanums(length=10, s="")
     chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ0123456789'
