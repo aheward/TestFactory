@@ -116,7 +116,7 @@ class PageFactory
     # @example
     #   link("Click Me For Fun!", :click_me) => Creates the methods #click_me and #click_me_link
     #
-    def link(link_text, *alias_name)
+    def link link_text, *alias_name
       elementize(:link, link_text, *alias_name)
     end
 
@@ -143,11 +143,11 @@ class PageFactory
     # @example
     #   link("Click Me For Fun!", :click_me) => Creates the methods #click_me and #click_me_link
     #
-    def button(button_text, *alias_name)
+    def button button_text, *alias_name
       elementize(:button, button_text, *alias_name)
     end
 
-    def inherited(klass)
+    def inherited klass
       klass.instance_eval {
 
         # Creates a method, #wait_for_ajax, usable in your Page Classes, that executes
@@ -157,9 +157,9 @@ class PageFactory
         #
         define_method 'wait_for_ajax' do |timeout=10|
           timeout.times do
-            sleep(0.3)
+            sleep 0.3
             return true if @browser.execute_script('return jQuery.active').to_i == 0
-            sleep(0.7)
+            sleep 0.7
           end
           raise Watir::Wait::TimeoutError, "Ajax calls continued beyond #{timeout} seconds."
         end
@@ -171,11 +171,11 @@ class PageFactory
     # A helper method that converts the passed string into snake case. See the StringFactory
     # module for more info.
     #
-    def damballa(text)
+    def damballa text
       StringFactory.damballa(text)
     end
 
-    def elementize(type, text, *alias_name)
+    def elementize type, text, *alias_name
       hash={:link=>:text, :button=>:value}
       if alias_name.empty?
         el_name=damballa("#{text}_#{type}")
