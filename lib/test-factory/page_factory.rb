@@ -69,6 +69,19 @@ class PageFactory
       end
     end
 
+    # Executes `jQuery.active` Javascript snippet each second until timeout.
+    # Snippet returns either 0 (no Ajax running) or 1 (Ajax running).
+    #
+    # If timeout is exceeded, raises Watir::Wait::TimeoutError exception.
+    #
+    def wait_for_ajax(timeout = 10)
+      timeout.times do
+        return true if @browser.execute_script('return jQuery.active').to_i == 0
+        sleep(1)
+      end
+      raise Watir::Wait::TimeoutError, "Timeout of #{timeout} seconds exceeded on waiting for Ajax."
+    end
+
     # The basic building block for defining and interacting with
     # elements on a web page. # Use in conjunction with
     # Watir to define all elements on a given page that are important to validate.
