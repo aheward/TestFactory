@@ -153,15 +153,16 @@ class PageFactory
         # Creates a method, #wait_for_ajax, usable in your Page Classes, that executes
         # the 'jQuery.active' Javascript snippet each second until timeout.
         #
-        # If timeout is exceeded, raises Watir::Wait::TimeoutError exception.
+        # If timeout is exceeded, raises Watir::Wait::TimeoutError exception. The returned error
+        # message is customizable.
         #
-        define_method 'wait_for_ajax' do |timeout=10|
+        define_method 'wait_for_ajax' do |timeout=10, message|
           timeout.times do
             sleep 0.3
             return true if @browser.execute_script('return jQuery.active').to_i == 0
             sleep 0.7
           end
-          raise Watir::Wait::TimeoutError, "Ajax calls continued beyond #{timeout} seconds."
+          raise Watir::Wait::TimeoutError, "Ajax calls continued beyond #{timeout} seconds. #{message}"
         end
 
       }
