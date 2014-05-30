@@ -202,6 +202,8 @@ module Watir
 
     def select_at_random
       ar = options.map(&:text)
+      # Must break out of this method if the select list has nothing to select...
+      return '::random::' if ar.size==1 && (ar[0]=~/^select(.?)$/i || ar[0]=='')
       sel = ar.sample
       while sel=~/^select(.?)$/i || sel==''
         sel = ar.sample
