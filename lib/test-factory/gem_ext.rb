@@ -106,29 +106,23 @@
 #
 # Much cleaner!
 #
-# If you absolutely _must_ have your data object's instance variable be something
-# other than +:set+ or +:clear+, then consider writing a private transform method
-# in your data object class, like this:
-#
-#   def checkbox_trans
-#     { "YES" => :set, "NO" => :clear }
-#   end
-#
-# Then use that transform with your +#fit+ method, like this:
-#
-#   page.checkbox.fit checkbox_trans[opts[:option]]
+# The +#fit+ method is designed to allow for other values than just +:set+ or +:clear+. It will support
+# 'Yes', 'No', 'on', 'off' (and it's case insensitive), +true+, and +false+, as well. This way you don't have to worry so much
+# about making methods that transform from one type to another.
 #
 module Watir
 
   class CheckBox
     def fit(arg)
-      self.send(arg) unless arg==nil
+      setting = TestFactory.binary_transform(arg)
+      self.send(setting) unless setting==nil
     end
   end
 
   class Radio
     def fit(arg)
-      self.set if arg==:set
+      setting = TestFactory.binary_transform(arg)
+      self.set if setting==:set
     end
   end
 

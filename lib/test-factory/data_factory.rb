@@ -112,18 +112,6 @@ class DataFactory
     end
   end
 
-  # Transform for use with data object instance variables
-  # that refer to checkboxes or radio buttons. Instead of returning a boolean value, it returns
-  # the symbols +:set+ or +:clear+ -- This can be useful because those symbols can then in turn
-  # be passed directly as methods for updating or validating the checkbox later.
-  #
-  # @param checkbox [Watir::CheckBox] The checkbox on the page that you want to inspect
-  #
-  def checkbox_setting(checkbox)
-    checkbox.set? ? :set : :clear
-  end
-  alias radio_setting checkbox_setting
-
   # A shortcut method for filling out fields on a page. The
   # method's first parameter is the page class that contains the fields
   # you want to fill out. That is followed by the list of field name(s)
