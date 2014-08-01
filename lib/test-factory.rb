@@ -13,5 +13,6 @@
 # limitations under the License.
 
 require 'watir-webdriver'
+require 'forwardable'
 %w{foundry.rb data_factory.rb}.each { |f| require "#{File.dirname(__FILE__)}/test-factory/#{f}" }
 Dir["#{File.dirname(__FILE__)}/test-factory/*.rb"].each {|f| require f }

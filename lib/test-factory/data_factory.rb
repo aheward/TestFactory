@@ -16,6 +16,7 @@
 class DataFactory
 
   include Foundry
+  extend Forwardable
 
   # Since Data Objects are not "Marshallable", and they generally
   # contain lots of types of data in their instance variables,
