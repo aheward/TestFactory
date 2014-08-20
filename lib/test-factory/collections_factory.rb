@@ -32,7 +32,7 @@ class CollectionsFactory < Array
     #
     # Note that it's assumed that the target data object will have a
     # create method defined. If not, this will not work properly.
-    define_method 'add' do |opts|
+    define_method 'add' do |opts={}|
       element = klass.new @browser, opts
       element.create
       self << element
