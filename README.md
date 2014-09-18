@@ -1,4 +1,4 @@
-Kauli's TestFactory Gem
+Kuali's TestFactory Gem
 =========================
 
 Overview
