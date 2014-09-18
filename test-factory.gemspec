@@ -7,7 +7,7 @@ spec = Gem::Specification.new do |s|
   s.test_files = Dir.glob("test/*test_rb")
   s.authors = ['Abraham Heward']
   s.email = %w{aheward@rsmart.com}
-  s.homepage = 'https://github.com/rSmart'
+  s.homepage = 'https://github.com/kuali'
   s.add_dependency 'watir-webdriver', '>= 0.6.4'
   s.required_ruby_version = '>= 1.9.2'
 end
