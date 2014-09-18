@@ -58,7 +58,7 @@ Please note that the following example is *very* simplified and contrived, to ke
 Begin by creating a BasePage class. This class should have PageFactory as its superclass and define sets of class elements that are generally common across the pages of your site.
 
 ```ruby
-require 'test-factory'
+require 'kuali-test-factory'
 
 class BasePage < PageFactory
 
