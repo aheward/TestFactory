@@ -120,6 +120,19 @@ class PageFactory
       elementize(:link, link_text, *alias_name)
     end
 
+    # Defines four methods related to Kuali's "Maintainable" fields, which can sometimes be read-only spans.
+    # The id_string parameter must be a String value that matches the element's name attribute value after the
+    # 'document.newMaintainable.' prefix.
+    #
+    # @example
+    #   maintainable(:text_field, :chart_code, 'chartOfAccountsCode') => Creates the methods :chart_code, :chart_code_readonly, :chart_code_old, and :chart_code_new
+    def maintainable(watir_element, method_name, id_string)
+      element(method_name) { |b| b.frm.send(watir_element, name: "document.newMaintainableObject.#{id_string}") }
+      value("#{method_name}_readonly".to_sym) { |b| b.frm.span(id: "document.newMaintainableObject.#{id_string}.div").text.strip }
+      value("#{method_name}_old".to_sym) { |b| b.frm.span(id: "document.oldMaintainableObject.#{id_string}.div").text.strip }
+      value("#{method_name}_new".to_sym) { |b| b.send(method_name).exists? ? b.send(method_name).value : b.send("#{method_name}_readonly".to_sym) }
+    end
+
     # Use this for buttons that are safe to define by their value attribute.
     # This method will return two methods for interacting with the button:
     # one that refers to the button itself, and one that clicks on it.
