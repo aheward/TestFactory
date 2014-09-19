@@ -130,7 +130,13 @@ class PageFactory
       element(method_name) { |b| b.frm.send(watir_element, name: "document.newMaintainableObject.#{id_string}") }
       value("#{method_name}_readonly".to_sym) { |b| b.frm.span(id: "document.newMaintainableObject.#{id_string}.div").text.strip }
       value("#{method_name}_old".to_sym) { |b| b.frm.span(id: "document.oldMaintainableObject.#{id_string}.div").text.strip }
-      value("#{method_name}_new".to_sym) { |b| b.send(method_name).exists? ? b.send(method_name).value : b.send("#{method_name}_readonly".to_sym) }
+      value("#{method_name}_new".to_sym) { |b|
+        if watir_element==:select
+          b.send(method_name).exists? ? b.send(method_name).selected_options[0].text.strip : b.send("#{method_name}_readonly".to_sym)
+        else
+          b.send(method_name).exists? ? b.send(method_name).value.strip : b.send("#{method_name}_readonly".to_sym)
+        end
+      }
     end
 
     # Use this for buttons that are safe to define by their value attribute.
