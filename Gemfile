@@ -1,5 +1,5 @@
 source "http://rubygems.org"
 
-gem 'watir-webdriver'
+gem 'watir', '>=6.0.0'
 
 gemspec
