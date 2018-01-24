@@ -70,7 +70,7 @@ module Foundry
   #   page.wait_until { |b| b.processing_message=="Done" }
   #
   def wait_until(timeout=30, message=nil, &block)
-    Object::Watir::Wait.until(timeout, message, &block)
+    Object::Watir::Wait.until(timeout: timeout, message: message, &block)
   end
 
 end

@@ -53,7 +53,7 @@ Now you'll want to start building your own page classes, using the methods in Te
 
 Please note that the following example is *very* simplified and contrived, to keep every step as compartmentalized as possible. Once you've read through this, it is strongly recommended that you visit an actual repository that is using the test factory.
 
-[Here](https://github.com/rSmart/sambal-cle) is one such.
+[Here](https://github.com/aheward/sambal-cle) is one such.
 
 Begin by creating a BasePage class. This class should have PageFactory as its superclass and define sets of class elements that are generally common across the pages of your site.
 
