@@ -53,7 +53,7 @@ class PageFactory
     #
     def expected_element element_name, timeout=30
       define_method 'expected_element' do
-        self.send(element_name).wait_until_present timeout: timeout
+        self.send(element_name).wait_until(timeout: timeout, &:present?)
       end
     end
 
